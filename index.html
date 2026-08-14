@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CREED Premium Fitness - 12 Hafta</title>
+    <!-- Modern Yazı Tipi -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0B0E14;
+            --surface: #151A22;
+            --surface-light: #1F2633;
+            --primary: #F01E2C;
+            --primary-glow: rgba(240, 30, 44, 0.4);
+            --text-main: #F8F9FA;
+            --text-muted: #8B949E;
+            --border-radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+            background-color: var(--bg-color);
+            position: relative;
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        /* Üst Menü */
+        header {
+            background: linear-gradient(180deg, var(--surface) 0%, var(--bg-color) 100%);
+            padding: 30px 20px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--surface-light);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 28px;
+            letter-spacing: 3px;
+            margin: 0;
+            background: linear-gradient(90deg, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: 14px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-top: 4px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .screen {
+            padding: 20px;
+            display: none;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        .screen.active { display: block; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hafta Seçici */
+        .week-selector {
+            margin-bottom: 20px;
+        }
+        .week-selector label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .week-select {
+            width: 100%;
+            padding: 14px 16px;
+            background-color: var(--surface);
+            color: var(--text-main);
+            border: 1px solid var(--surface-light);
+            border-radius: var(--border-radius);
+            font-size: 15px;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .week-select:focus { border-color: var(--primary); }
+
+        /* Bilgi Kartı */
+        .rules-card {
+            background-color: var(--surface);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-muted);
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .rules-card strong { color: var(--text-main); }
+
+        h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Gün Butonları */
+        .btn-day {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 18px 20px;
+            margin-bottom: 12px;
+            background-color: var(--surface);
+            color: var(--text-main);
+            border: 1px solid var(--surface-light);
+            border-radius: var(--border-radius);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-day:hover:not(:disabled) {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px var(--primary-glow);
+        }
+        .btn-day:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn-day span {
+            background-color: var(--surface-light);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: var(--primary);
+            transition: 0.3s;
+        }
+        .btn-day:hover:not(:disabled) span {
+            background-color: var(--primary);
+            color: #fff;
+        }
+
+        /* Egzersiz Kartları */
+        .exercise-card {
+            background-color: var(--surface);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            border: 1px solid var(--surface-light);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        .exercise-header {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .exercise-title {
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+        .exercise-badges {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .tech-badge {
+            background: linear-gradient(135deg, var(--primary) 0%, #B3121F 100%);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .btn-video {
+            background-color: var(--surface-light);
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid #333;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.2s;
+        }
+        .btn-video:hover {
+            border-color: var(--text-main);
+            background-color: #2A3441;
+        }
+        
+        .exercise-stats {
+            display: flex;
+            gap: 15px;
+            background-color: var(--bg-color);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .stat-item { display: flex; flex-direction: column; }
+        .stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase;}
+        .stat-value { font-size: 14px; font-weight: 600; color: var(--text-main); }
+
+        /* Aksiyon Butonları */
+        .btn-action {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, #B3121F 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-action:active { transform: scale(0.98); }
+        .btn-rest { background: var(--surface-light); padding: 12px; font-size: 13px; }
+        .btn-rest:hover { background: #2A3441; }
+        .btn-back {
+            background: transparent;
+            border: 1px solid var(--surface-light);
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+        .btn-back:hover { color: var(--text-main); border-color: var(--text-muted); }
+
+        /* Kronometre */
+        .timer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 60vh;
+        }
+        .timer-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 4px solid var(--surface-light);
+            border-top-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 30px;
+            animation: spinPulse 2s linear infinite;
+        }
+        @keyframes spinPulse {
+            0% { box-shadow: 0 0 20px rgba(240,30,44,0.1); }
+            50% { box-shadow: 0 0 40px rgba(240,30,44,0.3); }
+            100% { box-shadow: 0 0 20px rgba(240,30,44,0.1); }
+        }
+
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+        /* ALT MENÜ */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 420px;
+            background-color: var(--surface);
+            border-top: 1px solid var(--surface-light);
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            z-index: 100;
+        }
+        .nav-item {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .nav-item.active { color: var(--primary); }
+        .nav-icon { font-size: 20px; }
+        
+        /* SÖZLÜK EKRANI */
+        .dict-card {
+            background-color: var(--surface);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary);
+        }
+        .dict-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: var(--text-main); }
+        .dict-desc { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header>
+        <h1>CREED</h1>
+        <h2>12 Haftalık Program</h2>
+    </header>
+
+    <!-- ANA EKRAN (PROGRAM) -->
+    <div id="home-screen" class="screen active main-tab">
+        <div class="rules-card" id="phase-info">
+            <!-- Dinamik Faz Bilgisi -->
+        </div>
+
+        <div class="week-selector">
+            <label for="weekSelect">Hafta Seçimi:</label>
+            <select id="weekSelect" class="week-select" onchange="changeWeek()">
+                <!-- 1 ile 12 arası haftalar -->
+            </select>
+        </div>
+        
+        <h3 id="week-title-header">📅 1. Hafta Antrenmanları</h3>
+        <button class="btn-day" onclick="openWorkout('pazartesi')">Pazartesi: Üst Vücut <span>BAŞLA</span></button>
+        <button class="btn-day" onclick="openWorkout('sali')">Salı: Alt Vücut <span>BAŞLA</span></button>
+        <button class="btn-day" disabled>Çarşamba: Dinlenme <span>YAT</span></button>
+        <button class="btn-day" onclick="openWorkout('persembe')">Perşembe: Göğüs + Sırt <span>BAŞLA</span></button>
+        <button class="btn-day" onclick="openWorkout('cuma')">Cuma: Omuz + Kol <span>BAŞLA</span></button>
+        <button class="btn-day" disabled>Hafta Sonu: Dinlenme <span>YAT</span></button>
+    </div>
+
+    <!-- SÖZLÜK EKRANI -->
+    <div id="dictionary-screen" class="screen main-tab">
+        <h3 style="margin-bottom: 20px;">📖 Yoğunluk Teknikleri</h3>
+        
+        <div class="dict-card">
+            <div class="dict-title">RPT (Reverse Pyramid Training)</div>
+            <div class="dict-desc">İlk sette en ağır ağırlıkla düşük tekrar (örneğin 6), sonraki setlerde ağırlığı azaltıp tekrarı artır (örneğin 8–10). Her set tükenişe 1–2 tekrar kala bitmeli (RIR 1–2)[cite: 1].</div>
+        </div>
+        
+        <div class="dict-card">
+            <div class="dict-title">RP (Rest-Pause)</div>
+            <div class="dict-desc">Set bitince 10-15 sn dinlen, sonra 3–5 tekrar daha yap. Bunu 3 kere tekrarla[cite: 1].</div>
+        </div>
+        
+        <div class="dict-card">
+            <div class="dict-title">SS (Superset)</div>
+            <div class="dict-desc">İki hareketi dinlenmeden arka arkaya yapmak[cite: 1].</div>
+        </div>
+
+        <div class="dict-card">
+            <div class="dict-title">DS (Drop Set)</div>
+            <div class="dict-desc">Son sette ağırlığı %20–30 azalt, hemen tükenişe kadar devam et[cite: 1].</div>
+        </div>
+    </div>
+
+    <!-- ANTRENMAN EKRANI -->
+    <div id="workout-screen" class="screen">
+        <button class="btn-action btn-back" onclick="goHome()">← Programlara Dön</button>
+        <h3 id="workout-title" style="color: var(--primary); font-size: 20px; border-bottom: 1px solid #1F2633; padding-bottom: 15px; margin-bottom: 20px;"></h3>
+        
+        <div id="exercise-list"></div>
+        
+        <button class="btn-action" style="margin-top: 30px; padding: 20px;" onclick="finishWorkout()">
+            🏆 Antrenmanı Bitir & Kardiyoya Geç
+        </button>
+    </div>
+
+    <!-- KRONOMETRE EKRANI -->
+    <div id="timer-screen" class="screen">
+        <div class="timer-container">
+            <h3 style="color: var(--text-muted); margin-bottom: 30px;">⏱️ Dinlenme Süresi</h3>
+            <div class="timer-circle">
+                <span style="animation: none;" id="timer">01:00</span>
+            </div>
+            <button class="btn-action" style="width: 80%;" onclick="stopTimer()">Atla & Geri Dön</button>
+        </div>
+    </div>
+
+    <!-- ALT MENÜ -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" id="nav-home" onclick="switchTab('home')">
+            <span class="nav-icon">🏠</span>
+            Program
+        </div>
+        <div class="nav-item" id="nav-dict" onclick="switchTab('dict')">
+            <span class="nav-icon">📖</span>
+            Sözlük
+        </div>
+    </nav>
+</div>
+
+<script>
+    let currentWeek = 1;
+    let timerInterval;
+
+    // 12 Haftalık Veri Bankası (PDF İçeriği Tam Entegrasyon)
+    const weeksData = {
+        // --- FAZ 1 (1 - 4. Haftalar) ---
+        1: getPhase1Data(1),
+        2: getPhase1Data(2),
+        3: getPhase1Data(3),
+        4: getPhase1Data(4),
+        // --- FAZ 2 (5 - 8. Haftalar) ---
+        5: getPhase2Data(5),
+        6: getPhase2Data(6),
+        7: getPhase2Data(7),
+        8: getPhase2Data(8),
+        // --- FAZ 3 (9 - 12. Haftalar) ---
+        9: getPhase3Data(9),
+        10: getPhase3Data(10),
+        11: getPhase3Data(11),
+        12: getPhase3Data(12)
+    };
+
+    function getPhase1Data(weekNum) {
+        return {
+            phaseTitle: "🎯 Faz 1: Temel Adaptasyon (Hafta " + weekNum + ")",
+            phaseDesc: "<strong>Amaç:</strong> Form öğren, güç geliştir.<br><strong>Kardiyo:</strong> Antrenman sonu 15 dk 10 eğim 5 hız[cite: 1].<br><strong>Dinlenme:</strong> Set arası 2-3 dk, Hareket arası 1 dk[cite: 1].",
+            days: {
+                pazartesi: {
+                    title: "Pazartesi: Üst Vücut",
+                    exercises: [
+                        { name: "SM Incline Bench Press", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
+                        { name: "Weighted Pull-Up", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
+                        { name: "Machine Shoulder Press", sets: "3", reps: "8-10", rir: "1-2", tech: "" },
+                        { name: "Seated Cable Row", sets: "2", reps: "10 + Son Set", rir: "0", tech: "RP" },
+                        { name: "DB Lateral Raise", sets: "3", reps: "12 + Son Set", rir: "0", tech: "RP" }
+                    ]
+                },
+                sali: {
+                    title: "Salı: Alt Vücut",
+                    exercises: [
+                        { name: "Back Squat", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
+                        { name: "Leg Extension", sets: "2", reps: "12 + Son Set", rir: "0", tech: "RP" },
+                        { name: "Leg Curl", sets: "2", reps: "12 + Son Set", rir: "0", tech: "RP" },
+                        { name: "Walking Lunge", sets: "2", reps: "20", rir: "0", tech: "" },
+                        { name: "SS Adductor", sets: "2", reps: "15", rir: "0", tech: "SS" }
+                    ]
+                },
+                persembe: {
+                    title: "Perşembe: Göğüs + Sırt",
+                    exercises: [
+                        { name: "SM Incline Bench Press", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
+                        { name: "Chest Supported DB Row", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
+                        { name: "Machine Chest Press", sets: "2", reps: "12 + Son Set", rir: "0", tech: "RP" },
+                        { name: "Reverse Grip Lat Pulldown", sets: "2", reps: "12 + Son Set", rir: "0", tech: "RP" }
+                    ]
+                },
+                cuma: {
+                    title: "Cuma: Omuz + Biceps + Triceps",
+                    exercises: [
+                        { name: "Machine Shoulder Press", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
+                        { name: "Lateral Raise", sets: "3", reps: "12 + Son Set", rir: "0", tech: "RP" },
+                        { name: "Reverse Pec Deck", sets: "3", reps: "12", rir: "0", tech: "" },
+                        { name: "Facepull", sets: "3", reps: "12", rir: "0", tech: "" }
+                    ]
+                }
+            }
+        };
+    }
+
+    function getPhase2Data(weekNum) {
+        return {
+            phaseTitle: "🚀 Faz 2: Hacim Artışı (Hafta " + weekNum + ")",
+            phaseDesc: "<strong>Amaç:</strong> Kas hacmi + Yoğunluk artırımı[cite: 1].<br><strong>Kardiyo:</strong> Antrenman sonu 15 dk 10 eğim 5 hız[cite: 1].",
+            days: {
+                pazartesi: {
+                    title: "Pazartesi: Üst Vücut (Hacim)",
+                    exercises: [
+                        { name: "SM Seated Shoulder Press", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
+                        { name: "Weighted Pull-Up", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
+                        { name: "Incline Chest Press", sets: "3", reps: "8-10", rir: "1-2", tech: "" },
+                        { name: "Pec Deck", sets: "3", reps: "10", rir: "0", tech: "" },
+                        { name: "DB Lateral Raise", sets: "3", reps: "12 + Son Set", rir: "0", tech: "RP" }
+                    ]
+                },
+                sali: {
+                    title: "Salı: Alt Vücut (Hacim)",
+                    exercises: [
+                        { name: "Leg Press", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
+                        { name: "Walking Lunge", sets: "2", reps: "20", rir: "0", tech: "" },
+                        { name: "Leg Extension", sets: "3", reps: "10", rir: "0", tech: "" },
+                        { name: "Leg Curl", sets: "3", reps: "10", rir: "0", tech: "" }
+                    ]
+                },
+                persembe: {
+                    title: "Perşembe: Göğüs + Sırt (Hacim)",
+                    exercises: [
+                        { name: "Normal Grip Lat Pulldown", sets: "3", reps: "8-10", rir: "1-2", tech: "" },
+                        { name: "SM Incline Bench Press", sets: "3", reps: "8-10", rir: "1-2", tech: "" },
+                        { name: "Chest Supported DB Row", sets: "3", reps: "10", rir: "1-2", tech: "SS" },
+                        { name: "Incline DB Press", sets: "3", reps: "10", rir: "1-2", tech: "SS" }
+                    ]
+                },
+                cuma: {
+                    title: "Cuma: Omuz + Kol (Hacim)",
+                    exercises: [
+                        { name: "Machine Shoulder Press", sets: "3", reps: "8-10", rir: "1-2", tech: "" },
+                        { name: "Lateral Raise", sets: "3", reps: "12 + Son Set", rir: "0", tech: "RP" },
+                        { name: "Cable Upright Row", sets: "3", reps: "12", rir: "0", tech: "" },
+                        { name: "Cable Rear Delt Fly", sets: "3", reps: "12", rir: "0", tech: "" }
+                    ]
+                }
+            }
+        };
+    }
+
+    function getPhase3Data(weekNum) {
+        return {
+            phaseTitle: "💎 Faz 3: Estetik Tanımlama (Hafta " + weekNum + ")",
+            phaseDesc: "<strong>Amaç:</strong> Kas detaylarını ortaya çıkar, kontrolü artır[cite: 1].<br><strong>Teknikler:</strong> RPT + RP + Drop Set (DS)[cite: 1].",
+            days: {
+                pazartesi: {
+                    title: "Pazartesi: Üst Vücut (Tanımlama)",
+                    exercises: [
+                        { name: "SM Incline Bench Press", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
+                        { name: "Weighted Pull-Up", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
+                        { name: "Machine Shoulder Press", sets: "3", reps: "8-10", rir: "1-2", tech: "" },
+                        { name: "DB Lateral Raise", sets: "3", reps: "12 + Son Set", rir: "0", tech: "RP" }
+                    ]
+                },
+                sali: {
+                    title: "Salı: Alt Vücut (Tanımlama)",
+                    exercises: [
+                        { name: "Back Squat", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
+                        { name: "Leg Extension", sets: "3", reps: "12 + Son Set", rir: "0", tech: "DS" },
+                        { name: "Leg Curl", sets: "3", reps: "12 + Son Set", rir: "0", tech: "DS" },
+                        { name: "Walking Lunge", sets: "2", reps: "20", rir: "0", tech: "" }
+                    ]
+                },
+                persembe: {
+                    title: "Perşembe: Göğüs + Sırt (Tanımlama)",
+                    exercises: [
+                        { name: "SM Incline Bench Press", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
+                        { name: "Chest Supported DB Row", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
+                        { name: "Machine Chest Press", sets: "2", reps: "12 + Son Set", rir: "0", tech: "DS" },
+                        { name: "Reverse Grip Lat Pulldown", sets: "2", reps: "12 + Son Set", rir: "0", tech: "DS" }
+                    ]
+                },
+                cuma: {
+                    title: "Cuma: Omuz + Kol (Tanımlama)",
+                    exercises: [
+                        { name: "Machine Shoulder Press", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
+                        { name: "Lateral Raise", sets: "3", reps: "12 + Son Set", rir: "0", tech: "RP" },
+                        { name: "Reverse Pec Deck", sets: "3", reps: "12 + Son Set", rir: "0", tech: "DS" },
+                        { name: "Facepull", sets: "3", reps: "12", rir: "0", tech: "" }
+                    ]
+                }
+            }
+        };
+    }
+
+    // Uygulama Açılışında Hafta Seçicisini Doldur
+    window.onload = function() {
+        const select = document.getElementById('weekSelect');
+        for(let i=1; i<=12; i++) {
+            let opt = document.createElement('option');
+            opt.value = i;
+            opt.innerText = i + ". Hafta";
+            select.appendChild(opt);
+        }
+        updateHomeUI();
+    }
+
+    function changeWeek() {
+        currentWeek = document.getElementById('weekSelect').value;
+        updateHomeUI();
+    }
+
+    function updateHomeUI() {
+        const data = weeksData[currentWeek];
+        document.getElementById('phase-info').innerHTML = data.phaseDesc;
+        document.getElementById('week-title-header').innerText = `📅 ${currentWeek}. Hafta Antrenmanları`;
+    }
+
+    // Alt Menü Geçişleri
+    function switchTab(tab) {
+        document.getElementById('workout-screen').classList.remove('active');
+        document.getElementById('timer-screen').classList.remove('active');
+        clearInterval(timerInterval);
+
+        document.querySelectorAll('.main-tab').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+        if(tab === 'home') {
+            document.getElementById('home-screen').classList.add('active');
+            document.getElementById('nav-home').classList.add('active');
+        } else if(tab === 'dict') {
+            document.getElementById('dictionary-screen').classList.add('active');
+            document.getElementById('nav-dict').classList.add('active');
+        }
+        window.scrollTo(0, 0);
+    }
+
+    // Antrenman Ekranını Açma
+    function openWorkout(dayKey) {
+        document.querySelectorAll('.main-tab').forEach(el => el.classList.remove('active'));
+        document.getElementById('workout-screen').classList.add('active');
+        
+        const weekData = weeksData[currentWeek];
+        const dayData = weekData.days[dayKey];
+        
+        document.getElementById('workout-title').innerText = `🔥 ${currentWeek}. Hafta - ${dayData.title}`;
+        
+        const list = document.getElementById('exercise-list');
+        list.innerHTML = '';
+        
+        dayData.exercises.forEach(ex => {
+            let techHtml = ex.tech ? `<span class="tech-badge">${ex.tech}</span>` : '';
+            let ytQuery = encodeURIComponent(ex.name + " exercise form tutorial");
+            let videoLink = `https://www.youtube.com/results?search_query=${ytQuery}`;
+
+            let cardHtml = `
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <div class="exercise-title">${ex.name}</div>
+                        <div class="exercise-badges">
+                            ${techHtml}
+                            <a href="${videoLink}" target="_blank" class="btn-video">🎥 İzle</a>
+                        </div>
+                    </div>
+                    <div class="exercise-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Set</span>
+                            <span class="stat-value">${ex.sets}</span>
+                        </div>
+                        <div class="stat-item" style="border-left: 1px solid #2A3441; padding-left: 15px;">
+                            <span class="stat-label">Tekrar</span>
+                            <span class="stat-value">${ex.reps}</span>
+                        </div>
+                        <div class="stat-item" style="border-left: 1px solid #2A3441; padding-left: 15px;">
+                            <span class="stat-label">RIR</span>
+                            <span class="stat-value">${ex.rir}</span>
+                        </div>
+                    </div>
+                    <div class="two-col">
+                        <button class="btn-action btn-rest" onclick="startTimer(60)">⏱ 1 Dk Dinlen</button>
+                        <button class="btn-action btn-rest" onclick="startTimer(120)">⏱ 2 Dk Dinlen</button>
+                    </div>
+                </div>
+            `;
+            list.innerHTML += cardHtml;
+        });
+        window.scrollTo(0, 0);
+    }
+
+    function goHome() {
+        switchTab('home');
+    }
+
+    function startTimer(seconds) {
+        document.getElementById('workout-screen').classList.remove('active');
+        document.getElementById('timer-screen').classList.add('active');
+        
+        let timeLeft = seconds;
+        updateTimerDisplay(timeLeft);
+        
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay(timeLeft);
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                alert("🔔 Dinlenme süresi bitti! Antrenmana dön ve parçalamaya devam et.");
+                stopTimer();
+            }
+        }, 1000);
+    }
+
+    function stopTimer() {
+        clearInterval(timerInterval);
+        document.getElementById('timer-screen').classList.remove('active');
+        document.getElementById('workout-screen').classList.add('active');
+    }
+
+    function updateTimerDisplay(seconds) {
+        let m = Math.floor(seconds / 60).toString().padStart(2, '0');
+        let s = (seconds % 60).toString().padStart(2, '0');
+        document.getElementById('timer').innerText = `${m}:${s}`;
+    }
+
+    function finishWorkout() {
+        // Eğer 12. hafta bittiyse PDF'in sonundaki özel kutlama mesajını göster
+        if(currentWeek == 12) {
+            alert("🏆 12 HAFTAYI BİTİRDİN!\n\nArtık bahanen kalmadı. İstersen buradan sonra yalnız devam edersin, istersen bir üst seviyeyi birlikte çıkarız!\nSeçim senin.");
+        } else {
+            alert(`🏆 Tebrikler! ${currentWeek}. Hafta antrenmanı bitti.\n\nŞimdi PDF kurallarına göre kardiyo zamanı:\n🏃‍♂️ 15 Dakika\n📈 10 Eğim\n⚡ 5 Hız`);
+        }
+        goHome();
+    }
+</script>
+
+</body>
+</html>
