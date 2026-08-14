@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CREED Premium Fitness - 12 Hafta</title>
+    <title>CREED Premium Fitness - Set & Antrenman Takipli Sürüm</title>
     <!-- Modern Yazı Tipi -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -15,6 +15,8 @@
             --primary-glow: rgba(240, 30, 44, 0.4);
             --text-main: #F8F9FA;
             --text-muted: #8B949E;
+            --success: #2ECC71;
+            --success-glow: rgba(46, 204, 113, 0.3);
             --border-radius: 16px;
         }
 
@@ -166,10 +168,36 @@
             color: var(--primary);
             transition: 0.3s;
         }
-        .btn-day:hover:not(:disabled) span {
-            background-color: var(--primary);
-            color: #fff;
+        .btn-day.completed { border-color: var(--success); }
+        .btn-day.completed span { background-color: var(--success); color: #fff; }
+        .btn-day:hover:not(:disabled) span { background-color: var(--primary); color: #fff; }
+
+        /* Takvim / İlerleme Listesi Öğeleri */
+        .cal-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--surface);
+            padding: 16px 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 10px;
+            border: 1px solid var(--surface-light);
+            cursor: pointer;
+            transition: 0.2s;
         }
+        .cal-item:hover {
+            border-color: var(--text-muted);
+            transform: scale(1.01);
+        }
+        .cal-item-info { font-weight: 600; font-size: 15px; }
+        .cal-item-status {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-done { background-color: rgba(46, 204, 113, 0.15); color: var(--success); border: 1px solid var(--success); }
+        .status-pending { background-color: var(--surface-light); color: var(--text-muted); }
 
         /* Egzersiz Kartları */
         .exercise-card {
@@ -179,6 +207,11 @@
             margin-bottom: 15px;
             border: 1px solid var(--surface-light);
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: 0.3s;
+        }
+        .exercise-card.all-sets-done {
+            border-color: var(--success);
+            box-shadow: 0 4px 15px var(--success-glow);
         }
         .exercise-header {
             display: flex;
@@ -186,17 +219,8 @@
             gap: 8px;
             margin-bottom: 15px;
         }
-        .exercise-title {
-            font-size: 16px;
-            font-weight: 700;
-            line-height: 1.3;
-        }
-        .exercise-badges {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
+        .exercise-title { font-size: 16px; font-weight: 700; line-height: 1.3; }
+        .exercise-badges { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .tech-badge {
             background: linear-gradient(135deg, var(--primary) 0%, #B3121F 100%);
             color: white;
@@ -220,10 +244,7 @@
             gap: 5px;
             transition: 0.2s;
         }
-        .btn-video:hover {
-            border-color: var(--text-main);
-            background-color: #2A3441;
-        }
+        .btn-video:hover { border-color: var(--text-main); background-color: #2A3441; }
         
         .exercise-stats {
             display: flex;
@@ -236,6 +257,33 @@
         .stat-item { display: flex; flex-direction: column; }
         .stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase;}
         .stat-value { font-size: 14px; font-weight: 600; color: var(--text-main); }
+
+        /* Set Butonları Alanı */
+        .sets-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .set-btn {
+            flex: 1;
+            min-width: 50px;
+            padding: 10px 5px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--surface-light);
+            border-radius: 10px;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+        }
+        .set-btn.done {
+            background-color: rgba(46, 204, 113, 0.2);
+            border-color: var(--success);
+            color: var(--success);
+        }
 
         /* Aksiyon Butonları */
         .btn-action {
@@ -342,24 +390,30 @@
 
     <!-- ANA EKRAN (PROGRAM) -->
     <div id="home-screen" class="screen active main-tab">
-        <div class="rules-card" id="phase-info">
-            <!-- Dinamik Faz Bilgisi -->
-        </div>
+        <div class="rules-card" id="phase-info"></div>
 
         <div class="week-selector">
-            <label for="weekSelect">Hafta Seçimi:</label>
+            <label for="weekSelect">Hafta Seçimi (Kaldığın Yer):</label>
             <select id="weekSelect" class="week-select" onchange="changeWeek()">
-                <!-- 1 ile 12 arası haftalar -->
+                <!-- Dinamik -->
             </select>
         </div>
         
         <h3 id="week-title-header">📅 1. Hafta Antrenmanları</h3>
-        <button class="btn-day" onclick="openWorkout('pazartesi')">Pazartesi: Üst Vücut <span>BAŞLA</span></button>
-        <button class="btn-day" onclick="openWorkout('sali')">Salı: Alt Vücut <span>BAŞLA</span></button>
+        <button class="btn-day" id="btn-pazartesi" onclick="openWorkout('pazartesi')">Pazartesi: Üst Vücut <span id="badge-pazartesi">BAŞLA</span></button>
+        <button class="btn-day" id="btn-sali" onclick="openWorkout('sali')">Salı: Alt Vücut <span id="badge-sali">BAŞLA</span></button>
         <button class="btn-day" disabled>Çarşamba: Dinlenme <span>YAT</span></button>
-        <button class="btn-day" onclick="openWorkout('persembe')">Perşembe: Göğüs + Sırt <span>BAŞLA</span></button>
-        <button class="btn-day" onclick="openWorkout('cuma')">Cuma: Omuz + Kol <span>BAŞLA</span></button>
+        <button class="btn-day" id="btn-persembe" onclick="openWorkout('persembe')">Perşembe: Göğüs + Sırt <span id="badge-persembe">BAŞLA</span></button>
+        <button class="btn-day" id="btn-cuma" onclick="openWorkout('cuma')">Cuma: Omuz + Kol <span id="badge-cuma">BAŞLA</span></button>
         <button class="btn-day" disabled>Hafta Sonu: Dinlenme <span>YAT</span></button>
+    </div>
+
+    <!-- TAKVİM EKRANI -->
+    <div id="calendar-screen" class="screen main-tab">
+        <h3 style="margin-bottom: 5px;">🗓️ Antrenman Takvimi</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Durumu değiştirmek için ilgili güne tıklayabilirsin:</p>
+        
+        <div id="calendar-list"></div>
     </div>
 
     <!-- SÖZLÜK EKRANI -->
@@ -416,6 +470,10 @@
             <span class="nav-icon">🏠</span>
             Program
         </div>
+        <div class="nav-item" id="nav-calendar" onclick="switchTab('calendar')">
+            <span class="nav-icon">🗓️</span>
+            Takvim
+        </div>
         <div class="nav-item" id="nav-dict" onclick="switchTab('dict')">
             <span class="nav-icon">📖</span>
             Sözlük
@@ -424,167 +482,52 @@
 </div>
 
 <script>
-    let currentWeek = 1;
+    let currentWeek = localStorage.getItem('creed_current_week') || 1;
+    let activeDayKey = null;
     let timerInterval;
 
-    // 12 Haftalık Veri Bankası (PDF İçeriği Tam Entegrasyon)
     const weeksData = {
-        // --- FAZ 1 (1 - 4. Haftalar) ---
-        1: getPhase1Data(1),
-        2: getPhase1Data(2),
-        3: getPhase1Data(3),
-        4: getPhase1Data(4),
-        // --- FAZ 2 (5 - 8. Haftalar) ---
-        5: getPhase2Data(5),
-        6: getPhase2Data(6),
-        7: getPhase2Data(7),
-        8: getPhase2Data(8),
-        // --- FAZ 3 (9 - 12. Haftalar) ---
-        9: getPhase3Data(9),
-        10: getPhase3Data(10),
-        11: getPhase3Data(11),
-        12: getPhase3Data(12)
+        1: getPhase1Data(1), 2: getPhase1Data(2), 3: getPhase1Data(3), 4: getPhase1Data(4),
+        5: getPhase2Data(5), 6: getPhase2Data(6), 7: getPhase2Data(7), 8: getPhase2Data(8),
+        9: getPhase3Data(9), 10: getPhase3Data(10), 11: getPhase3Data(11), 12: getPhase3Data(12)
     };
 
     function getPhase1Data(weekNum) {
         return {
-            phaseTitle: "🎯 Faz 1: Temel Adaptasyon (Hafta " + weekNum + ")",
-            phaseDesc: "<strong>Amaç:</strong> Form öğren, güç geliştir.<br><strong>Kardiyo:</strong> Antrenman sonu 15 dk 10 eğim 5 hız[cite: 1].<br><strong>Dinlenme:</strong> Set arası 2-3 dk, Hareket arası 1 dk[cite: 1].",
+            phaseDesc: `<strong>🎯 Faz 1: Temel Adaptasyon (Hafta ${weekNum})</strong><br><strong>Amaç:</strong> Form öğren, güç geliştir.<br><strong>Kardiyo:</strong> Antrenman sonu 15 dk 10 eğim 5 hız[cite: 1].`,
             days: {
-                pazartesi: {
-                    title: "Pazartesi: Üst Vücut",
-                    exercises: [
-                        { name: "SM Incline Bench Press", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
-                        { name: "Weighted Pull-Up", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
-                        { name: "Machine Shoulder Press", sets: "3", reps: "8-10", rir: "1-2", tech: "" },
-                        { name: "Seated Cable Row", sets: "2", reps: "10 + Son Set", rir: "0", tech: "RP" },
-                        { name: "DB Lateral Raise", sets: "3", reps: "12 + Son Set", rir: "0", tech: "RP" }
-                    ]
-                },
-                sali: {
-                    title: "Salı: Alt Vücut",
-                    exercises: [
-                        { name: "Back Squat", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
-                        { name: "Leg Extension", sets: "2", reps: "12 + Son Set", rir: "0", tech: "RP" },
-                        { name: "Leg Curl", sets: "2", reps: "12 + Son Set", rir: "0", tech: "RP" },
-                        { name: "Walking Lunge", sets: "2", reps: "20", rir: "0", tech: "" },
-                        { name: "SS Adductor", sets: "2", reps: "15", rir: "0", tech: "SS" }
-                    ]
-                },
-                persembe: {
-                    title: "Perşembe: Göğüs + Sırt",
-                    exercises: [
-                        { name: "SM Incline Bench Press", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
-                        { name: "Chest Supported DB Row", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
-                        { name: "Machine Chest Press", sets: "2", reps: "12 + Son Set", rir: "0", tech: "RP" },
-                        { name: "Reverse Grip Lat Pulldown", sets: "2", reps: "12 + Son Set", rir: "0", tech: "RP" }
-                    ]
-                },
-                cuma: {
-                    title: "Cuma: Omuz + Biceps + Triceps",
-                    exercises: [
-                        { name: "Machine Shoulder Press", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
-                        { name: "Lateral Raise", sets: "3", reps: "12 + Son Set", rir: "0", tech: "RP" },
-                        { name: "Reverse Pec Deck", sets: "3", reps: "12", rir: "0", tech: "" },
-                        { name: "Facepull", sets: "3", reps: "12", rir: "0", tech: "" }
-                    ]
-                }
+                pazartesi: { title: "Pazartesi: Üst Vücut", exercises: [{ id: "ex1", name: "SM Incline Bench Press", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex2", name: "Weighted Pull-Up", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex3", name: "Machine Shoulder Press", sets: 3, reps: "8-10", rir: "1-2", tech: "" }, { id: "ex4", name: "Seated Cable Row", sets: 2, reps: "10 + Son Set", rir: "0", tech: "RP" }, { id: "ex5", name: "DB Lateral Raise", sets: 3, reps: "12 + Son Set", rir: "0", tech: "RP" }] },
+                sali: { title: "Salı: Alt Vücut", exercises: [{ id: "ex6", name: "Back Squat", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex7", name: "Leg Extension", sets: 2, reps: "12 + Son Set", rir: "0", tech: "RP" }, { id: "ex8", name: "Leg Curl", sets: 2, reps: "12 + Son Set", rir: "0", tech: "RP" }, { id: "ex9", name: "Walking Lunge", sets: 2, reps: "20", rir: "0", tech: "" }, { id: "ex10", name: "SS Adductor", sets: 2, reps: "15", rir: "0", tech: "SS" }] },
+                persembe: { title: "Perşembe: Göğüs + Sırt", exercises: [{ id: "ex11", name: "SM Incline Bench Press", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex12", name: "Chest Supported DB Row", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex13", name: "Machine Chest Press", sets: 2, reps: "12 + Son Set", rir: "0", tech: "RP" }, { id: "ex14", name: "Reverse Grip Lat Pulldown", sets: 2, reps: "12 + Son Set", rir: "0", tech: "RP" }] },
+                cuma: { title: "Cuma: Omuz + Biceps + Triceps", exercises: [{ id: "ex15", name: "Machine Shoulder Press", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex16", name: "Lateral Raise", sets: 3, reps: "12 + Son Set", rir: "0", tech: "RP" }, { id: "ex17", name: "Reverse Pec Deck", sets: 3, reps: "12", rir: "0", tech: "" }, { id: "ex18", name: "Facepull", sets: 3, reps: "12", rir: "0", tech: "" }] }
             }
         };
     }
 
     function getPhase2Data(weekNum) {
         return {
-            phaseTitle: "🚀 Faz 2: Hacim Artışı (Hafta " + weekNum + ")",
-            phaseDesc: "<strong>Amaç:</strong> Kas hacmi + Yoğunluk artırımı[cite: 1].<br><strong>Kardiyo:</strong> Antrenman sonu 15 dk 10 eğim 5 hız[cite: 1].",
+            phaseDesc: `<strong>🚀 Faz 2: Hacim Artışı (Hafta ${weekNum})</strong><br><strong>Amaç:</strong> Kas hacmi + Yoğunluk artırımı[cite: 1].<br><strong>Kardiyo:</strong> Antrenman sonu 15 dk 10 eğim 5 hız[cite: 1].`,
             days: {
-                pazartesi: {
-                    title: "Pazartesi: Üst Vücut (Hacim)",
-                    exercises: [
-                        { name: "SM Seated Shoulder Press", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
-                        { name: "Weighted Pull-Up", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
-                        { name: "Incline Chest Press", sets: "3", reps: "8-10", rir: "1-2", tech: "" },
-                        { name: "Pec Deck", sets: "3", reps: "10", rir: "0", tech: "" },
-                        { name: "DB Lateral Raise", sets: "3", reps: "12 + Son Set", rir: "0", tech: "RP" }
-                    ]
-                },
-                sali: {
-                    title: "Salı: Alt Vücut (Hacim)",
-                    exercises: [
-                        { name: "Leg Press", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
-                        { name: "Walking Lunge", sets: "2", reps: "20", rir: "0", tech: "" },
-                        { name: "Leg Extension", sets: "3", reps: "10", rir: "0", tech: "" },
-                        { name: "Leg Curl", sets: "3", reps: "10", rir: "0", tech: "" }
-                    ]
-                },
-                persembe: {
-                    title: "Perşembe: Göğüs + Sırt (Hacim)",
-                    exercises: [
-                        { name: "Normal Grip Lat Pulldown", sets: "3", reps: "8-10", rir: "1-2", tech: "" },
-                        { name: "SM Incline Bench Press", sets: "3", reps: "8-10", rir: "1-2", tech: "" },
-                        { name: "Chest Supported DB Row", sets: "3", reps: "10", rir: "1-2", tech: "SS" },
-                        { name: "Incline DB Press", sets: "3", reps: "10", rir: "1-2", tech: "SS" }
-                    ]
-                },
-                cuma: {
-                    title: "Cuma: Omuz + Kol (Hacim)",
-                    exercises: [
-                        { name: "Machine Shoulder Press", sets: "3", reps: "8-10", rir: "1-2", tech: "" },
-                        { name: "Lateral Raise", sets: "3", reps: "12 + Son Set", rir: "0", tech: "RP" },
-                        { name: "Cable Upright Row", sets: "3", reps: "12", rir: "0", tech: "" },
-                        { name: "Cable Rear Delt Fly", sets: "3", reps: "12", rir: "0", tech: "" }
-                    ]
-                }
+                pazartesi: { title: "Pazartesi: Üst Vücut (Hacim)", exercises: [{ id: "ex19", name: "SM Seated Shoulder Press", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex20", name: "Weighted Pull-Up", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex21", name: "Incline Chest Press", sets: 3, reps: "8-10", rir: "1-2", tech: "" }, { id: "ex22", name: "Pec Deck", sets: 3, reps: "10", rir: "0", tech: "" }, { id: "ex23", name: "DB Lateral Raise", sets: 3, reps: "12 + Son Set", rir: "0", tech: "RP" }] },
+                sali: { title: "Salı: Alt Vücut (Hacim)", exercises: [{ id: "ex24", name: "Leg Press", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex25", name: "Walking Lunge", sets: 2, reps: "20", rir: "0", tech: "" }, { id: "ex26", name: "Leg Extension", sets: 3, reps: "10", rir: "0", tech: "" }, { id: "ex27", name: "Leg Curl", sets: 3, reps: "10", rir: "0", tech: "" }] },
+                persembe: { title: "Perşembe: Göğüs + Sırt (Hacim)", exercises: [{ id: "ex28", name: "Normal Grip Lat Pulldown", sets: 3, reps: "8-10", rir: "1-2", tech: "" }, { id: "ex29", name: "SM Incline Bench Press", sets: 3, reps: "8-10", rir: "1-2", tech: "" }, { id: "ex30", name: "Chest Supported DB Row", sets: 3, reps: "10", rir: "1-2", tech: "SS" }, { id: "ex31", name: "Incline DB Press", sets: 3, reps: "10", rir: "1-2", tech: "SS" }] },
+                cuma: { title: "Cuma: Omuz + Kol (Hacim)", exercises: [{ id: "ex32", name: "Machine Shoulder Press", sets: 3, reps: "8-10", rir: "1-2", tech: "" }, { id: "ex33", name: "Lateral Raise", sets: 3, reps: "12 + Son Set", rir: "0", tech: "RP" }, { id: "ex34", name: "Cable Upright Row", sets: 3, reps: "12", rir: "0", tech: "" }, { id: "ex35", name: "Cable Rear Delt Fly", sets: 3, reps: "12", rir: "0", tech: "" }] }
             }
         };
     }
 
     function getPhase3Data(weekNum) {
         return {
-            phaseTitle: "💎 Faz 3: Estetik Tanımlama (Hafta " + weekNum + ")",
-            phaseDesc: "<strong>Amaç:</strong> Kas detaylarını ortaya çıkar, kontrolü artır[cite: 1].<br><strong>Teknikler:</strong> RPT + RP + Drop Set (DS)[cite: 1].",
+            phaseDesc: `<strong>💎 Faz 3: Estetik Tanımlama (Hafta ${weekNum})</strong><br><strong>Amaç:</strong> Kas detaylarını ortaya çıkar[cite: 1].<br><strong>Teknikler:</strong> RPT + RP + Drop Set (DS)[cite: 1].`,
             days: {
-                pazartesi: {
-                    title: "Pazartesi: Üst Vücut (Tanımlama)",
-                    exercises: [
-                        { name: "SM Incline Bench Press", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
-                        { name: "Weighted Pull-Up", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
-                        { name: "Machine Shoulder Press", sets: "3", reps: "8-10", rir: "1-2", tech: "" },
-                        { name: "DB Lateral Raise", sets: "3", reps: "12 + Son Set", rir: "0", tech: "RP" }
-                    ]
-                },
-                sali: {
-                    title: "Salı: Alt Vücut (Tanımlama)",
-                    exercises: [
-                        { name: "Back Squat", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
-                        { name: "Leg Extension", sets: "3", reps: "12 + Son Set", rir: "0", tech: "DS" },
-                        { name: "Leg Curl", sets: "3", reps: "12 + Son Set", rir: "0", tech: "DS" },
-                        { name: "Walking Lunge", sets: "2", reps: "20", rir: "0", tech: "" }
-                    ]
-                },
-                persembe: {
-                    title: "Perşembe: Göğüs + Sırt (Tanımlama)",
-                    exercises: [
-                        { name: "SM Incline Bench Press", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
-                        { name: "Chest Supported DB Row", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
-                        { name: "Machine Chest Press", sets: "2", reps: "12 + Son Set", rir: "0", tech: "DS" },
-                        { name: "Reverse Grip Lat Pulldown", sets: "2", reps: "12 + Son Set", rir: "0", tech: "DS" }
-                    ]
-                },
-                cuma: {
-                    title: "Cuma: Omuz + Kol (Tanımlama)",
-                    exercises: [
-                        { name: "Machine Shoulder Press", sets: "3", reps: "6-8-10", rir: "1-2", tech: "RPT" },
-                        { name: "Lateral Raise", sets: "3", reps: "12 + Son Set", rir: "0", tech: "RP" },
-                        { name: "Reverse Pec Deck", sets: "3", reps: "12 + Son Set", rir: "0", tech: "DS" },
-                        { name: "Facepull", sets: "3", reps: "12", rir: "0", tech: "" }
-                    ]
-                }
+                pazartesi: { title: "Pazartesi: Üst Vücut (Tanımlama)", exercises: [{ id: "ex36", name: "SM Incline Bench Press", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex37", name: "Weighted Pull-Up", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex38", name: "Machine Shoulder Press", sets: 3, reps: "8-10", rir: "1-2", tech: "" }, { id: "ex39", name: "DB Lateral Raise", sets: 3, reps: "12 + Son Set", rir: "0", tech: "RP" }] },
+                sali: { title: "Salı: Alt Vücut (Tanımlama)", exercises: [{ id: "ex40", name: "Back Squat", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex41", name: "Leg Extension", sets: 3, reps: "12 + Son Set", rir: "0", tech: "DS" }, { id: "ex42", name: "Leg Curl", sets: 3, reps: "12 + Son Set", rir: "0", tech: "DS" }, { id: "ex43", name: "Walking Lunge", sets: 2, reps: "20", rir: "0", tech: "" }] },
+                persembe: { title: "Perşembe: Göğüs + Sırt (Tanımlama)", exercises: [{ id: "ex44", name: "SM Incline Bench Press", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex45", name: "Chest Supported DB Row", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex46", name: "Machine Chest Press", sets: 2, reps: "12 + Son Set", rir: "0", tech: "DS" }, { id: "ex47", name: "Reverse Grip Lat Pulldown", sets: 2, reps: "12 + Son Set", rir: "0", tech: "DS" }] },
+                cuma: { title: "Cuma: Omuz + Kol (Tanımlama)", exercises: [{ id: "ex48", name: "Machine Shoulder Press", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex49", name: "Lateral Raise", sets: 3, reps: "12 + Son Set", rir: "0", tech: "RP" }, { id: "ex50", name: "Reverse Pec Deck", sets: 3, reps: "12 + Son Set", rir: "0", tech: "DS" }, { id: "ex51", name: "Facepull", sets: 3, reps: "12", rir: "0", tech: "" }] }
             }
         };
     }
 
-    // Uygulama Açılışında Hafta Seçicisini Doldur
     window.onload = function() {
         const select = document.getElementById('weekSelect');
         for(let i=1; i<=12; i++) {
@@ -593,11 +536,13 @@
             opt.innerText = i + ". Hafta";
             select.appendChild(opt);
         }
+        select.value = currentWeek;
         updateHomeUI();
     }
 
     function changeWeek() {
         currentWeek = document.getElementById('weekSelect').value;
+        localStorage.setItem('creed_current_week', currentWeek);
         updateHomeUI();
     }
 
@@ -605,9 +550,59 @@
         const data = weeksData[currentWeek];
         document.getElementById('phase-info').innerHTML = data.phaseDesc;
         document.getElementById('week-title-header').innerText = `📅 ${currentWeek}. Hafta Antrenmanları`;
+        
+        ['pazartesi', 'sali', 'persembe', 'cuma'].forEach(day => {
+            let btn = document.getElementById(`btn-${day}`);
+            let badge = document.getElementById(`badge-${day}`);
+            let isCompleted = localStorage.getItem(`creed_w${currentWeek}_${day}`);
+            
+            if(isCompleted) {
+                btn.classList.add('completed');
+                badge.innerText = "TAMAMLANDI ✓";
+            } else {
+                btn.classList.remove('completed');
+                badge.innerText = "BAŞLA";
+            }
+        });
+        updateCalendarUI();
     }
 
-    // Alt Menü Geçişleri
+    function updateCalendarUI() {
+        const calList = document.getElementById('calendar-list');
+        calList.innerHTML = '';
+
+        const daysMap = [
+            { key: 'pazartesi', name: 'Pazartesi: Üst Vücut' },
+            { key: 'sali', name: 'Salı: Alt Vücut' },
+            { key: 'persembe', name: 'Perşembe: Göğüs + Sırt' },
+            { key: 'cuma', name: 'Cuma: Omuz + Kol' }
+        ];
+
+        daysMap.forEach(d => {
+            let isDone = localStorage.getItem(`creed_w${currentWeek}_${d.key}`);
+            let statusHtml = isDone 
+                ? `<div class="cal-item-status status-done">✓ Yapıldı</div>` 
+                : `<div class="cal-item-status status-pending">Bekliyor</div>`;
+
+            calList.innerHTML += `
+                <div class="cal-item" onclick="toggleDayStatus('${d.key}')">
+                    <div class="cal-item-info">${d.name}</div>
+                    ${statusHtml}
+                </div>
+            `;
+        });
+    }
+
+    function toggleDayStatus(dayKey) {
+        let storageKey = `creed_w${currentWeek}_${dayKey}`;
+        if(localStorage.getItem(storageKey)) {
+            localStorage.removeItem(storageKey);
+        } else {
+            localStorage.setItem(storageKey, 'true');
+        }
+        updateHomeUI();
+    }
+
     function switchTab(tab) {
         document.getElementById('workout-screen').classList.remove('active');
         document.getElementById('timer-screen').classList.remove('active');
@@ -619,6 +614,11 @@
         if(tab === 'home') {
             document.getElementById('home-screen').classList.add('active');
             document.getElementById('nav-home').classList.add('active');
+            updateHomeUI();
+        } else if(tab === 'calendar') {
+            document.getElementById('calendar-screen').classList.add('active');
+            document.getElementById('nav-calendar').classList.add('active');
+            updateCalendarUI();
         } else if(tab === 'dict') {
             document.getElementById('dictionary-screen').classList.add('active');
             document.getElementById('nav-dict').classList.add('active');
@@ -626,8 +626,8 @@
         window.scrollTo(0, 0);
     }
 
-    // Antrenman Ekranını Açma
     function openWorkout(dayKey) {
+        activeDayKey = dayKey;
         document.querySelectorAll('.main-tab').forEach(el => el.classList.remove('active'));
         document.getElementById('workout-screen').classList.add('active');
         
@@ -644,8 +644,24 @@
             let ytQuery = encodeURIComponent(ex.name + " exercise form tutorial");
             let videoLink = `https://www.youtube.com/results?search_query=${ytQuery}`;
 
+            // Set butonlarını oluştur
+            let setsHtml = '';
+            let allSetsCompleted = true;
+
+            for(let s = 1; s <= ex.sets; s++) {
+                let setKey = `creed_w${currentWeek}_${dayKey}_${ex.id}_set${s}`;
+                let isSetDone = localStorage.getItem(setKey);
+                if(!isSetDone) allSetsCompleted = false;
+
+                setsHtml += `
+                    <button class="set-btn ${isSetDone ? 'done' : ''}" id="btn-${ex.id}-set${s}" onclick="toggleSet('${ex.id}', ${s}, ${ex.sets})">
+                        Set ${s} ${isSetDone ? '✓' : ''}
+                    </button>
+                `;
+            }
+
             let cardHtml = `
-                <div class="exercise-card">
+                <div class="exercise-card ${allSetsCompleted ? 'all-sets-done' : ''}" id="card-${ex.id}">
                     <div class="exercise-header">
                         <div class="exercise-title">${ex.name}</div>
                         <div class="exercise-badges">
@@ -655,7 +671,7 @@
                     </div>
                     <div class="exercise-stats">
                         <div class="stat-item">
-                            <span class="stat-label">Set</span>
+                            <span class="stat-label">Toplam Set</span>
                             <span class="stat-value">${ex.sets}</span>
                         </div>
                         <div class="stat-item" style="border-left: 1px solid #2A3441; padding-left: 15px;">
@@ -667,6 +683,9 @@
                             <span class="stat-value">${ex.rir}</span>
                         </div>
                     </div>
+                    <div class="sets-container" id="sets-${ex.id}">
+                        ${setsHtml}
+                    </div>
                     <div class="two-col">
                         <button class="btn-action btn-rest" onclick="startTimer(60)">⏱ 1 Dk Dinlen</button>
                         <button class="btn-action btn-rest" onclick="startTimer(120)">⏱ 2 Dk Dinlen</button>
@@ -676,6 +695,38 @@
             list.innerHTML += cardHtml;
         });
         window.scrollTo(0, 0);
+    }
+
+    // Set durumunu değiştirme ve hafızaya kaydetme
+    function toggleSet(exId, setNum, totalSets) {
+        let setKey = `creed_w${currentWeek}_${activeDayKey}_${exId}_set${setNum}`;
+        let btn = document.getElementById(`btn-${exId}-set${setNum}`);
+        let card = document.getElementById(`card-${exId}`);
+
+        if(localStorage.getItem(setKey)) {
+            localStorage.removeItem(setKey);
+            btn.classList.remove('done');
+            btn.innerText = `Set ${setNum}`;
+        } else {
+            localStorage.setItem(setKey, 'true');
+            btn.classList.add('done');
+            btn.innerText = `Set ${setNum} ✓`;
+        }
+
+        // Tüm setler bitti mi kontrol et
+        let allDone = true;
+        for(let s = 1; s <= totalSets; s++) {
+            if(!localStorage.getItem(`creed_w${currentWeek}_${activeDayKey}_${exId}_set${s}`)) {
+                allDone = false;
+                break;
+            }
+        }
+
+        if(allDone) {
+            card.classList.add('all-sets-done');
+        } else {
+            card.classList.remove('all-sets-done');
+        }
     }
 
     function goHome() {
@@ -714,11 +765,14 @@
     }
 
     function finishWorkout() {
-        // Eğer 12. hafta bittiyse PDF'in sonundaki özel kutlama mesajını göster
-        if(currentWeek == 12) {
-            alert("🏆 12 HAFTAYI BİTİRDİN!\n\nArtık bahanen kalmadı. İstersen buradan sonra yalnız devam edersin, istersen bir üst seviyeyi birlikte çıkarız!\nSeçim senin.");
+        if(activeDayKey) {
+            localStorage.setItem(`creed_w${currentWeek}_${activeDayKey}`, 'true');
+        }
+
+        if(currentWeek == 12 && activeDayKey === 'cuma') {
+            alert("🏆 12 HAFTAYI BİTİRDİN!\n\nArtık bahanen kalmadı. İstersen buradan sonra yalnız devam et, istersen yeni bir serüvene başla!");
         } else {
-            alert(`🏆 Tebrikler! ${currentWeek}. Hafta antrenmanı bitti.\n\nŞimdi PDF kurallarına göre kardiyo zamanı:\n🏃‍♂️ 15 Dakika\n📈 10 Eğim\n⚡ 5 Hız`);
+            alert(`🏆 Tebrikler! ${currentWeek}. Hafta antrenmanı kaydedildi.\n\nŞimdi PDF kurallarına göre kardiyo zamanı:\n🏃‍♂️ 15 Dakika\n📈 10 Eğim\n⚡ 5 Hız`);
         }
         goHome();
     }
