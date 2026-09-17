@@ -1,781 +1,737 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CREED Premium Fitness - Set & Antrenman Takipli Sürüm</title>
-    <!-- Modern Yazı Tipi -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #0B0E14;
-            --surface: #151A22;
-            --surface-light: #1F2633;
-            --primary: #F01E2C;
-            --primary-glow: rgba(240, 30, 44, 0.4);
-            --text-main: #F8F9FA;
-            --text-muted: #8B949E;
-            --success: #2ECC71;
-            --success-glow: rgba(46, 204, 113, 0.3);
-            --border-radius: 16px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Komando 90</title>
+<meta name="description" content="90 günlük 3 fazlı kalistenik + rucking antrenman takip uygulaması.">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="icon-16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="icon-192.png" sizes="192x192" type="image/png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Komando 90">
+<meta name="theme-color" content="#f3efe2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#12140d" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+html{margin:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+img{max-width:100%;}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+:root{
+  --bg:#f3efe2;
+  --surface:#ffffff;
+  --surface-2:#eae3ce;
+  --text:#20241a;
+  --text-dim:#63684f;
+  --olive:#4a5638;
+  --olive-2:#5d6b46;
+  --accent:#c9662b;
+  --accent-2:#e08a3f;
+  --line:#ddd4b8;
+  --success:#4c7a44;
+  --success-bg:#e2ecdc;
+  --danger:#b3462c;
+  --danger-bg:#f3e0d8;
+  --shadow:0 1px 2px rgba(32,36,26,.07),0 6px 20px rgba(32,36,26,.08);
+  --radius:16px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#12140d;
+    --surface:#1b1f15;
+    --surface-2:#242a1a;
+    --text:#eee8d6;
+    --text-dim:#9a9c84;
+    --olive:#93a879;
+    --olive-2:#a7bb8d;
+    --accent:#e6923f;
+    --accent-2:#f2ac5f;
+    --line:#333a26;
+    --success:#82b26c;
+    --success-bg:#20301c;
+    --danger:#e28158;
+    --danger-bg:#3a241c;
+    --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 24px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12140d; --surface:#1b1f15; --surface-2:#242a1a; --text:#eee8d6; --text-dim:#9a9c84;
+  --olive:#93a879; --olive-2:#a7bb8d; --accent:#e6923f; --accent-2:#f2ac5f; --line:#333a26;
+  --success:#82b26c; --success-bg:#20301c; --danger:#e28158; --danger-bg:#3a241c;
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 24px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple-system,sans-serif;}
+h1,h2,h3,.disp{font-family:'Oswald',system-ui,sans-serif;text-transform:uppercase;letter-spacing:.02em;}
+.app{max-width:560px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;position:relative;}
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:color-mix(in srgb, var(--bg) 88%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+.brand{display:flex;align-items:center;gap:9px;font-family:'Oswald',sans-serif;font-weight:700;font-size:19px;letter-spacing:.06em;color:var(--olive);}
+.brand-mark{font-size:20px;filter:saturate(0) opacity(.85);}
+.icon-btn{border:1px solid var(--line);background:var(--surface);color:var(--text);width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;}
+.icon-btn:active{transform:scale(.94);}
+main#view{flex:1;padding:16px 16px calc(96px + env(safe-area-inset-bottom,0px));}
+.bottomnav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:color-mix(in srgb, var(--surface) 92%, transparent);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);}
+.bottomnav-inner{max-width:560px;margin:0 auto;display:flex;}
+.navbtn{flex:1;background:none;border:none;padding:10px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text-dim);font-family:'Inter',sans-serif;font-size:11px;font-weight:600;cursor:pointer;}
+.navbtn .ni{font-size:19px;line-height:1;}
+.navbtn.active{color:var(--accent);}
+/* ---- generic components ---- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);}
+.eyebrow{font-family:'Oswald',sans-serif;font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);}
+.pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 10px;font-size:11.5px;font-weight:600;background:var(--surface-2);color:var(--text-dim);}
+.pill.accent{background:color-mix(in srgb, var(--accent) 16%, var(--surface));color:var(--accent);}
+.pill.success{background:var(--success-bg);color:var(--success);}
+.btn{border:none;border-radius:12px;padding:11px 16px;font-weight:600;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;}
+.btn.primary{background:var(--accent);color:#fff8ef;}
+.btn.primary:active{background:var(--accent-2);}
+.btn.ghost{background:var(--surface-2);color:var(--text);}
+.btn.outline{background:transparent;border:1px solid var(--line);color:var(--text);}
+.btn:disabled{opacity:.55;}
+a.ytbtn{display:inline-flex;align-items:center;gap:6px;border-radius:10px;padding:7px 11px;font-size:12.5px;font-weight:600;background:var(--surface-2);color:var(--text);text-decoration:none;border:1px solid var(--line);}
+a.ytbtn:active{background:var(--line);}
+a.ytbtn .yicon{width:15px;height:15px;flex:0 0 auto;}
+button.rest-btn{border-radius:10px;padding:7px 11px;font-size:12.5px;font-weight:600;background:var(--surface-2);color:var(--text);border:1px solid var(--line);cursor:pointer;min-width:96px;font-variant-numeric:tabular-nums;}
+button.rest-btn.running{background:color-mix(in srgb, var(--accent) 18%, var(--surface));color:var(--accent);border-color:var(--accent);}
+button.rest-btn.done-flash{background:var(--success-bg);color:var(--success);border-color:var(--success);}
+/* ---- onboarding / sheet ---- */
+.overlay{position:fixed;inset:0;z-index:50;background:color-mix(in srgb, #000 45%, transparent);display:flex;align-items:flex-end;justify-content:center;}
+.sheet-panel{width:100%;max-width:560px;background:var(--surface);border-radius:20px 20px 0 0;padding:22px 20px calc(26px + env(safe-area-inset-bottom,0px));box-shadow:var(--shadow);}
+.field label{display:block;font-size:12.5px;font-weight:600;color:var(--text-dim);margin-bottom:6px;}
+input[type=date]{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;}
+/* ---- today view ---- */
+.hero{background:linear-gradient(155deg, var(--olive), var(--olive-2));border-radius:20px;padding:20px;color:#f7f5ea;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+.hero:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg, rgba(255,255,255,.05) 0 2px, transparent 2px 16px);pointer-events:none;}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;position:relative;}
+.hero-daynum{font-family:'Oswald',sans-serif;font-size:40px;font-weight:700;line-height:1;letter-spacing:.01em;}
+.hero-sub{font-size:12px;opacity:.85;margin-top:4px;}
+.hero-phase{font-size:12.5px;font-weight:600;opacity:.92;}
+.progressbar{height:6px;border-radius:999px;background:rgba(255,255,255,.22);overflow:hidden;margin-top:14px;}
+.progressbar > i{display:block;height:100%;background:#f4c77e;border-radius:999px;}
+.stat-row{display:flex;gap:10px;margin-top:18px;position:relative;}
+.stat-chip{flex:1;background:rgba(255,255,255,.12);border-radius:12px;padding:9px 10px;}
+.stat-chip b{display:block;font-family:'Oswald',sans-serif;font-size:16px;}
+.stat-chip span{font-size:10.5px;opacity:.85;}
+.section-title{display:flex;align-items:center;justify-content:space-between;margin:22px 0 10px;}
+.section-title h2{font-size:15px;font-weight:600;margin:0;color:var(--text);}
+.daytype{font-size:13px;color:var(--text-dim);margin-top:2px;}
+.exlist{display:flex;flex-direction:column;gap:10px;margin-top:12px;}
+.exrow{display:flex;flex-direction:column;gap:11px;padding:13px;border:1px solid var(--line);border-radius:14px;background:var(--surface);}
+.exrow.done{background:var(--success-bg);border-color:color-mix(in srgb, var(--success) 40%, var(--line));}
+.exrow-top{display:flex;gap:12px;}
+.pictogram{width:44px;height:44px;flex:0 0 auto;color:var(--olive);}
+.exrow.done .pictogram{color:var(--success);}
+.exbody{flex:1;min-width:0;}
+.exname{font-weight:600;font-size:14.5px;}
+.exdetail{font-size:12.5px;color:var(--text-dim);margin-top:2px;}
+.exnote{font-size:11.5px;color:var(--accent);margin-top:3px;font-weight:600;}
+.exmeta{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px;align-items:center;}
+.setpips{display:flex;gap:5px;}
+.pip{flex:1;height:7px;border-radius:4px;background:var(--surface-2);border:1px solid var(--line);}
+.pip.filled{background:var(--success);border-color:var(--success);}
+.advance-btn{width:100%;border:none;border-radius:12px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--olive);color:#f7f5ea;font-family:'Oswald',sans-serif;font-weight:700;letter-spacing:.03em;font-size:14px;cursor:pointer;}
+.advance-btn:active{transform:scale(.985);}
+.advance-btn .ab-progress{font-family:'Inter',sans-serif;font-weight:600;font-size:12px;opacity:.9;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.exrow.done .advance-btn{background:var(--success);}
+.restday-card{text-align:center;padding:34px 20px;}
+.restday-card .ri{font-size:34px;}
+.restday-card h3{margin:10px 0 6px;font-size:16px;}
+.restday-card p{font-size:13px;color:var(--text-dim);margin:0;line-height:1.5;}
+.future-card,.done-card{text-align:center;padding:34px 20px;}
+.future-card .fi,.done-card .fi{font-size:32px;}
+/* ---- program view ---- */
+.segmented{display:flex;gap:6px;background:var(--surface-2);padding:4px;border-radius:12px;}
+.month-tab{flex:1;border:none;background:transparent;padding:9px 6px;border-radius:9px;font-family:'Oswald',sans-serif;font-size:12px;font-weight:600;letter-spacing:.03em;color:var(--text-dim);cursor:pointer;}
+.month-tab.active{background:var(--surface);color:var(--olive);box-shadow:var(--shadow);}
+.month-info{margin-top:14px;padding:14px;}
+.month-info h3{margin:2px 0 6px;font-size:16px;}
+.month-info p{font-size:12.5px;color:var(--text-dim);margin:0 0 8px;line-height:1.5;}
+.daycard{margin-top:10px;overflow:hidden;}
+.day-head{display:flex;align-items:center;justify-content:space-between;padding:14px;cursor:pointer;gap:10px;}
+.day-head .dh-left{display:flex;align-items:center;gap:11px;min-width:0;}
+.day-badge{width:38px;height:38px;border-radius:10px;background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;font-weight:700;font-size:12px;color:var(--olive);flex:0 0 auto;}
+.daycard.today .day-badge{background:var(--accent);color:#fff;}
+.dh-name{font-weight:600;font-size:14px;}
+.dh-type{font-size:12px;color:var(--text-dim);margin-top:1px;}
+.chev{font-size:12px;color:var(--text-dim);transition:transform .2s;flex:0 0 auto;}
+.daycard.open .chev{transform:rotate(180deg);}
+.day-body{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+.daycard.open .day-body{max-height:2000px;}
+.day-body-inner{padding:0 14px 14px;}
+.day-note{font-size:11.5px;color:var(--text-dim);margin:-2px 0 10px;font-style:italic;}
+/* ---- progress view ---- */
+.statgrid{display:flex;gap:10px;}
+.statcard{flex:1;padding:14px;text-align:center;}
+.statcard b{display:block;font-family:'Oswald',sans-serif;font-size:22px;color:var(--olive);}
+.statcard span{font-size:11px;color:var(--text-dim);}
+.dotgrid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;padding:16px;}
+.dot{aspect-ratio:1;border-radius:5px;background:var(--surface-2);border:1px solid var(--line);}
+.dot.done{background:var(--success);border-color:var(--success);}
+.dot.today{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);}
+.dot.missed{background:var(--danger-bg);border-color:var(--danger);}
+.dot.rest{background:transparent;border-style:dashed;}
+.dot.future{opacity:.5;}
+.legend{display:flex;flex-wrap:wrap;gap:12px;padding:0 14px 14px;font-size:11px;color:var(--text-dim);}
+.legend span{display:inline-flex;align-items:center;gap:5px;}
+.legend i{width:9px;height:9px;border-radius:3px;display:inline-block;}
+.phasebars{display:flex;flex-direction:column;gap:12px;padding:14px;}
+.phaserow .pr-top{display:flex;justify-content:space-between;font-size:12.5px;font-weight:600;margin-bottom:6px;}
+.pr-track{height:8px;border-radius:999px;background:var(--surface-2);overflow:hidden;}
+.pr-track > i{display:block;height:100%;background:var(--olive);border-radius:999px;}
+/* ---- pictogram animation ---- */
+@media (prefers-reduced-motion:reduce){.pictogram *{animation:none!important;}}
+.cat-pullup .move{animation:pullMove 1.5s ease-in-out infinite;transform-origin:50px 26px;}
+@keyframes pullMove{0%,100%{transform:translateY(0)}50%{transform:translateY(11px)}}
+.cat-pushup .move{animation:pushMove 1.5s ease-in-out infinite;transform-origin:50px 60px;}
+@keyframes pushMove{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+.cat-dip .move{animation:pullMove 1.4s ease-in-out infinite;transform-origin:50px 30px;}
+.cat-core .legs{animation:coreMove 1.6s ease-in-out infinite;transform-origin:38px 62px;}
+@keyframes coreMove{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-38deg)}}
+.cat-squat .move{animation:squatMove 1.6s ease-in-out infinite;transform-origin:50px 88px;}
+@keyframes squatMove{0%,100%{transform:translateY(0)}50%{transform:translateY(13px)}}
+.cat-lunge .front{animation:lungeMove 1.5s ease-in-out infinite;transform-origin:46px 62px;}
+@keyframes lungeMove{0%,100%{transform:translateX(0)}50%{transform:translateX(-9px)}}
+.cat-jump .move{animation:jumpMove 1s ease-in-out infinite;}
+@keyframes jumpMove{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.cat-ruck .legL{animation:walkL 1.1s ease-in-out infinite;transform-origin:50px 62px;}
+.cat-ruck .legR{animation:walkR 1.1s ease-in-out infinite;transform-origin:50px 62px;}
+@keyframes walkL{0%,100%{transform:rotate(18deg)}50%{transform:rotate(-18deg)}}
+@keyframes walkR{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(18deg)}}
+.cat-rest .zz{animation:zPulse 2s ease-in-out infinite;}
+@keyframes zPulse{0%,100%{opacity:.25}50%{opacity:1}}
+[hidden]{display:none!important;}
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-        }
-
-        .app-container {
-            width: 100%;
-            max-width: 420px;
-            background-color: var(--bg-color);
-            position: relative;
-            box-shadow: 0 0 40px rgba(0,0,0,0.8);
-            overflow-x: hidden;
-            padding-bottom: 80px;
-        }
-
-        /* Üst Menü */
-        header {
-            background: linear-gradient(180deg, var(--surface) 0%, var(--bg-color) 100%);
-            padding: 30px 20px 20px;
-            text-align: center;
-            border-bottom: 1px solid var(--surface-light);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        h1 {
-            font-weight: 700;
-            font-size: 28px;
-            letter-spacing: 3px;
-            margin: 0;
-            background: linear-gradient(90deg, #fff, var(--text-muted));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        h2 {
-            font-size: 14px;
-            color: var(--primary);
-            font-weight: 600;
-            margin-top: 4px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        
-        .screen {
-            padding: 20px;
-            display: none;
-            animation: fadeIn 0.4s ease-out forwards;
-        }
-        .screen.active { display: block; }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Hafta Seçici */
-        .week-selector {
-            margin-bottom: 20px;
-        }
-        .week-selector label {
-            display: block;
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-        .week-select {
-            width: 100%;
-            padding: 14px 16px;
-            background-color: var(--surface);
-            color: var(--text-main);
-            border: 1px solid var(--surface-light);
-            border-radius: var(--border-radius);
-            font-size: 15px;
-            font-weight: 600;
-            outline: none;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .week-select:focus { border-color: var(--primary); }
-
-        /* Bilgi Kartı */
-        .rules-card {
-            background-color: var(--surface);
-            padding: 20px;
-            border-radius: var(--border-radius);
-            margin-bottom: 25px;
-            font-size: 13px;
-            line-height: 1.6;
-            color: var(--text-muted);
-            border-left: 4px solid var(--primary);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        .rules-card strong { color: var(--text-main); }
-
-        h3 {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* Gün Butonları */
-        .btn-day {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            padding: 18px 20px;
-            margin-bottom: 12px;
-            background-color: var(--surface);
-            color: var(--text-main);
-            border: 1px solid var(--surface-light);
-            border-radius: var(--border-radius);
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .btn-day:hover:not(:disabled) {
-            border-color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px var(--primary-glow);
-        }
-        .btn-day:disabled { opacity: 0.4; cursor: not-allowed; }
-        .btn-day span {
-            background-color: var(--surface-light);
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            color: var(--primary);
-            transition: 0.3s;
-        }
-        .btn-day.completed { border-color: var(--success); }
-        .btn-day.completed span { background-color: var(--success); color: #fff; }
-        .btn-day:hover:not(:disabled) span { background-color: var(--primary); color: #fff; }
-
-        /* Takvim / İlerleme Listesi Öğeleri */
-        .cal-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: var(--surface);
-            padding: 16px 20px;
-            border-radius: var(--border-radius);
-            margin-bottom: 10px;
-            border: 1px solid var(--surface-light);
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .cal-item:hover {
-            border-color: var(--text-muted);
-            transform: scale(1.01);
-        }
-        .cal-item-info { font-weight: 600; font-size: 15px; }
-        .cal-item-status {
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .status-done { background-color: rgba(46, 204, 113, 0.15); color: var(--success); border: 1px solid var(--success); }
-        .status-pending { background-color: var(--surface-light); color: var(--text-muted); }
-
-        /* Egzersiz Kartları */
-        .exercise-card {
-            background-color: var(--surface);
-            padding: 20px;
-            border-radius: var(--border-radius);
-            margin-bottom: 15px;
-            border: 1px solid var(--surface-light);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            transition: 0.3s;
-        }
-        .exercise-card.all-sets-done {
-            border-color: var(--success);
-            box-shadow: 0 4px 15px var(--success-glow);
-        }
-        .exercise-header {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-        .exercise-title { font-size: 16px; font-weight: 700; line-height: 1.3; }
-        .exercise-badges { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-        .tech-badge {
-            background: linear-gradient(135deg, var(--primary) 0%, #B3121F 100%);
-            color: white;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-        .btn-video {
-            background-color: var(--surface-light);
-            color: var(--text-main);
-            text-decoration: none;
-            padding: 5px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            border: 1px solid #333;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            transition: 0.2s;
-        }
-        .btn-video:hover { border-color: var(--text-main); background-color: #2A3441; }
-        
-        .exercise-stats {
-            display: flex;
-            gap: 15px;
-            background-color: var(--bg-color);
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-        .stat-item { display: flex; flex-direction: column; }
-        .stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase;}
-        .stat-value { font-size: 14px; font-weight: 600; color: var(--text-main); }
-
-        /* Set Butonları Alanı */
-        .sets-container {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        .set-btn {
-            flex: 1;
-            min-width: 50px;
-            padding: 10px 5px;
-            background-color: var(--bg-color);
-            border: 1px solid var(--surface-light);
-            border-radius: 10px;
-            color: var(--text-muted);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            text-align: center;
-        }
-        .set-btn.done {
-            background-color: rgba(46, 204, 113, 0.2);
-            border-color: var(--success);
-            color: var(--success);
-        }
-
-        /* Aksiyon Butonları */
-        .btn-action {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, var(--primary) 0%, #B3121F 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .btn-action:active { transform: scale(0.98); }
-        .btn-rest { background: var(--surface-light); padding: 12px; font-size: 13px; }
-        .btn-rest:hover { background: #2A3441; }
-        .btn-back {
-            background: transparent;
-            border: 1px solid var(--surface-light);
-            color: var(--text-muted);
-            margin-bottom: 20px;
-        }
-        .btn-back:hover { color: var(--text-main); border-color: var(--text-muted); }
-
-        /* Kronometre */
-        .timer-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 60vh;
-        }
-        .timer-circle {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            border: 4px solid var(--surface-light);
-            border-top-color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 30px;
-            animation: spinPulse 2s linear infinite;
-        }
-        @keyframes spinPulse {
-            0% { box-shadow: 0 0 20px rgba(240,30,44,0.1); }
-            50% { box-shadow: 0 0 40px rgba(240,30,44,0.3); }
-            100% { box-shadow: 0 0 20px rgba(240,30,44,0.1); }
-        }
-
-        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-        /* ALT MENÜ */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            max-width: 420px;
-            background-color: var(--surface);
-            border-top: 1px solid var(--surface-light);
-            display: flex;
-            justify-content: space-around;
-            padding: 15px 0;
-            z-index: 100;
-        }
-        .nav-item {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 600;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .nav-item.active { color: var(--primary); }
-        .nav-icon { font-size: 20px; }
-        
-        /* SÖZLÜK EKRANI */
-        .dict-card {
-            background-color: var(--surface);
-            padding: 20px;
-            border-radius: var(--border-radius);
-            margin-bottom: 15px;
-            border-left: 4px solid var(--primary);
-        }
-        .dict-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: var(--text-main); }
-        .dict-desc { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
-    </style>
+</style>
 </head>
 <body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">🪖</span><span>KOMANDO 90</span></div>
+    <button class="icon-btn" id="settingsBtn" aria-label="Ayarlar">⚙</button>
+  </header>
 
-<div class="app-container">
-    <header>
-        <h1>CREED</h1>
-        <h2>12 Haftalık Program</h2>
-    </header>
+  <main id="view"></main>
 
-    <!-- ANA EKRAN (PROGRAM) -->
-    <div id="home-screen" class="screen active main-tab">
-        <div class="rules-card" id="phase-info"></div>
-
-        <div class="week-selector">
-            <label for="weekSelect">Hafta Seçimi (Kaldığın Yer):</label>
-            <select id="weekSelect" class="week-select" onchange="changeWeek()">
-                <!-- Dinamik -->
-            </select>
-        </div>
-        
-        <h3 id="week-title-header">📅 1. Hafta Antrenmanları</h3>
-        <button class="btn-day" id="btn-pazartesi" onclick="openWorkout('pazartesi')">Pazartesi: Üst Vücut <span id="badge-pazartesi">BAŞLA</span></button>
-        <button class="btn-day" id="btn-sali" onclick="openWorkout('sali')">Salı: Alt Vücut <span id="badge-sali">BAŞLA</span></button>
-        <button class="btn-day" disabled>Çarşamba: Dinlenme <span>YAT</span></button>
-        <button class="btn-day" id="btn-persembe" onclick="openWorkout('persembe')">Perşembe: Göğüs + Sırt <span id="badge-persembe">BAŞLA</span></button>
-        <button class="btn-day" id="btn-cuma" onclick="openWorkout('cuma')">Cuma: Omuz + Kol <span id="badge-cuma">BAŞLA</span></button>
-        <button class="btn-day" disabled>Hafta Sonu: Dinlenme <span>YAT</span></button>
+  <nav class="bottomnav">
+    <div class="bottomnav-inner">
+      <button class="navbtn active" data-tab="today"><span class="ni">◎</span>Bugün</button>
+      <button class="navbtn" data-tab="program"><span class="ni">▤</span>Program</button>
+      <button class="navbtn" data-tab="progress"><span class="ni">◈</span>İlerleme</button>
     </div>
+  </nav>
+</div>
 
-    <!-- TAKVİM EKRANI -->
-    <div id="calendar-screen" class="screen main-tab">
-        <h3 style="margin-bottom: 5px;">🗓️ Antrenman Takvimi</h3>
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Durumu değiştirmek için ilgili güne tıklayabilirsin:</p>
-        
-        <div id="calendar-list"></div>
+<div class="overlay" id="onboarding" hidden>
+  <div class="sheet-panel">
+    <div class="eyebrow">Yeni Program</div>
+    <h2 style="margin:6px 0 8px;font-size:20px;">90 Günlük Protokole Başla</h2>
+    <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin:0 0 18px;">Kalistenik gücü, rucking kondisyonuyla birleştiren 3 fazlı programın burada başlıyor. İlerlemen bu cihazda saklanır.</p>
+    <div class="field">
+      <label for="startDateInput">Başlangıç Tarihi</label>
+      <input type="date" id="startDateInput">
     </div>
+    <button class="btn primary" id="startProgramBtn" style="width:100%;margin-top:16px;">Programı Başlat</button>
+  </div>
+</div>
 
-    <!-- SÖZLÜK EKRANI -->
-    <div id="dictionary-screen" class="screen main-tab">
-        <h3 style="margin-bottom: 20px;">📖 Yoğunluk Teknikleri</h3>
-        
-        <div class="dict-card">
-            <div class="dict-title">RPT (Reverse Pyramid Training)</div>
-            <div class="dict-desc">İlk sette en ağır ağırlıkla düşük tekrar (örneğin 6), sonraki setlerde ağırlığı azaltıp tekrarı artır (örneğin 8–10). Her set tükenişe 1–2 tekrar kala bitmeli (RIR 1–2)[cite: 1].</div>
-        </div>
-        
-        <div class="dict-card">
-            <div class="dict-title">RP (Rest-Pause)</div>
-            <div class="dict-desc">Set bitince 10-15 sn dinlen, sonra 3–5 tekrar daha yap. Bunu 3 kere tekrarla[cite: 1].</div>
-        </div>
-        
-        <div class="dict-card">
-            <div class="dict-title">SS (Superset)</div>
-            <div class="dict-desc">İki hareketi dinlenmeden arka arkaya yapmak[cite: 1].</div>
-        </div>
-
-        <div class="dict-card">
-            <div class="dict-title">DS (Drop Set)</div>
-            <div class="dict-desc">Son sette ağırlığı %20–30 azalt, hemen tükenişe kadar devam et[cite: 1].</div>
-        </div>
+<div class="overlay" id="settingsSheet" hidden>
+  <div class="sheet-panel">
+    <div class="eyebrow">Ayarlar</div>
+    <h2 style="margin:6px 0 14px;font-size:18px;">Program Ayarları</h2>
+    <div class="field">
+      <label for="settingsDateInput">Başlangıç Tarihi</label>
+      <input type="date" id="settingsDateInput">
     </div>
-
-    <!-- ANTRENMAN EKRANI -->
-    <div id="workout-screen" class="screen">
-        <button class="btn-action btn-back" onclick="goHome()">← Programlara Dön</button>
-        <h3 id="workout-title" style="color: var(--primary); font-size: 20px; border-bottom: 1px solid #1F2633; padding-bottom: 15px; margin-bottom: 20px;"></h3>
-        
-        <div id="exercise-list"></div>
-        
-        <button class="btn-action" style="margin-top: 30px; padding: 20px;" onclick="finishWorkout()">
-            🏆 Antrenmanı Bitir & Kardiyoya Geç
-        </button>
-    </div>
-
-    <!-- KRONOMETRE EKRANI -->
-    <div id="timer-screen" class="screen">
-        <div class="timer-container">
-            <h3 style="color: var(--text-muted); margin-bottom: 30px;">⏱️ Dinlenme Süresi</h3>
-            <div class="timer-circle">
-                <span style="animation: none;" id="timer">01:00</span>
-            </div>
-            <button class="btn-action" style="width: 80%;" onclick="stopTimer()">Atla & Geri Dön</button>
-        </div>
-    </div>
-
-    <!-- ALT MENÜ -->
-    <nav class="bottom-nav">
-        <div class="nav-item active" id="nav-home" onclick="switchTab('home')">
-            <span class="nav-icon">🏠</span>
-            Program
-        </div>
-        <div class="nav-item" id="nav-calendar" onclick="switchTab('calendar')">
-            <span class="nav-icon">🗓️</span>
-            Takvim
-        </div>
-        <div class="nav-item" id="nav-dict" onclick="switchTab('dict')">
-            <span class="nav-icon">📖</span>
-            Sözlük
-        </div>
-    </nav>
+    <button class="btn primary" id="saveSettingsBtn" style="width:100%;margin-top:14px;">Kaydet</button>
+    <button class="btn outline" id="resetBtn" style="width:100%;margin-top:10px;">Programı Sıfırla</button>
+    <div id="resetConfirm" hidden style="margin-top:10px;font-size:12px;color:var(--danger);text-align:center;">Tüm ilerleme silinecek. Emin misen tekrar dokun ↑</div>
+    <button class="btn ghost" id="closeSettingsBtn" style="width:100%;margin-top:10px;">Kapat</button>
+  </div>
 </div>
 
 <script>
-    let currentWeek = localStorage.getItem('creed_current_week') || 1;
-    let activeDayKey = null;
-    let timerInterval;
+(function(){
+"use strict";
 
-    const weeksData = {
-        1: getPhase1Data(1), 2: getPhase1Data(2), 3: getPhase1Data(3), 4: getPhase1Data(4),
-        5: getPhase2Data(5), 6: getPhase2Data(6), 7: getPhase2Data(7), 8: getPhase2Data(8),
-        9: getPhase3Data(9), 10: getPhase3Data(10), 11: getPhase3Data(11), 12: getPhase3Data(12)
-    };
+/* ================= DATA ================= */
+var m1_pzt=[
+  {name:"Barfiks (Nizami + Negatif)",cat:"pullup",detail:"4 Set × (3 Nizami + 3 Negatif Tekrar)",rest:90,sets:4,yt:"barfiks çekme tekniği negatif barfiks"},
+  {name:"Şınav",cat:"pushup",detail:"4 Set × 15 Tekrar",rest:60,sets:4,yt:"doğru şınav formu"},
+  {name:"Dips (Sandalye / Bar)",cat:"dip",detail:"4 Set × 10 Tekrar",rest:60,sets:4,yt:"sandalyede dips hareketi"},
+  {name:"Lying Leg Raise / Plank",cat:"core",detail:"3 Set × 15 Tekrar veya 45 Saniye",rest:45,sets:3,yt:"lying leg raise ve plank tekniği"}
+];
+var m1_sal=[
+  {name:"Squat / Lunge",cat:"squat",detail:"4 Set × 20 Tekrar (Squat) veya 4 Set × 12 Tekrar (Lunge)",rest:60,sets:4,yt:"squat ve lunge doğru form"},
+  {name:"Calf Raise / Burpee",cat:"jump",detail:"4 Set × 25 Tekrar (Calf) veya 3 Set × 10 Tekrar (Burpee)",rest:60,sets:4,yt:"calf raise ve burpee tekniği"}
+];
+var m1_car=[{name:"Ağırlık Yelekli Yürüyüş (Rucking)",cat:"ruck",detail:"40 Dakika — Normal Tempo",rest:0,sets:1,yt:"rucking ağırlık yelekli yürüyüş rehberi"}];
+var m1_cmt=[{name:"Ağırlık Yelekli Yürüyüş",cat:"ruck",detail:"40–50 Dakika — Normal Tempo, Aktif Yağ Yakımı",rest:0,sets:1,yt:"rucking yağ yakımı yürüyüşü"}];
+var m1_cum=m1_sal.concat([{name:"Akşam Yelekli Yürüyüş",cat:"ruck",detail:"40 Dakika",rest:0,sets:1,yt:"akşam rucking yürüyüşü"}]);
 
-    function getPhase1Data(weekNum) {
-        return {
-            phaseDesc: `<strong>🎯 Faz 1: Temel Adaptasyon (Hafta ${weekNum})</strong><br><strong>Amaç:</strong> Form öğren, güç geliştir.<br><strong>Kardiyo:</strong> Antrenman sonu 15 dk 10 eğim 5 hız[cite: 1].`,
-            days: {
-                pazartesi: { title: "Pazartesi: Üst Vücut", exercises: [{ id: "ex1", name: "SM Incline Bench Press", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex2", name: "Weighted Pull-Up", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex3", name: "Machine Shoulder Press", sets: 3, reps: "8-10", rir: "1-2", tech: "" }, { id: "ex4", name: "Seated Cable Row", sets: 2, reps: "10 + Son Set", rir: "0", tech: "RP" }, { id: "ex5", name: "DB Lateral Raise", sets: 3, reps: "12 + Son Set", rir: "0", tech: "RP" }] },
-                sali: { title: "Salı: Alt Vücut", exercises: [{ id: "ex6", name: "Back Squat", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex7", name: "Leg Extension", sets: 2, reps: "12 + Son Set", rir: "0", tech: "RP" }, { id: "ex8", name: "Leg Curl", sets: 2, reps: "12 + Son Set", rir: "0", tech: "RP" }, { id: "ex9", name: "Walking Lunge", sets: 2, reps: "20", rir: "0", tech: "" }, { id: "ex10", name: "SS Adductor", sets: 2, reps: "15", rir: "0", tech: "SS" }] },
-                persembe: { title: "Perşembe: Göğüs + Sırt", exercises: [{ id: "ex11", name: "SM Incline Bench Press", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex12", name: "Chest Supported DB Row", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex13", name: "Machine Chest Press", sets: 2, reps: "12 + Son Set", rir: "0", tech: "RP" }, { id: "ex14", name: "Reverse Grip Lat Pulldown", sets: 2, reps: "12 + Son Set", rir: "0", tech: "RP" }] },
-                cuma: { title: "Cuma: Omuz + Biceps + Triceps", exercises: [{ id: "ex15", name: "Machine Shoulder Press", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex16", name: "Lateral Raise", sets: 3, reps: "12 + Son Set", rir: "0", tech: "RP" }, { id: "ex17", name: "Reverse Pec Deck", sets: 3, reps: "12", rir: "0", tech: "" }, { id: "ex18", name: "Facepull", sets: 3, reps: "12", rir: "0", tech: "" }] }
-            }
-        };
+var m2_pzt=[
+  {name:"Barfiks (Tamamen Nizami)",cat:"pullup",detail:"4 Set × 5-6 Tekrar (negatif bitti)",rest:90,sets:4,yt:"nizami barfiks tekniği"},
+  {name:"Geniş Tutuş Şınav",cat:"pushup",detail:"4 Set × 20 Tekrar",rest:60,sets:4,yt:"geniş tutuş şınav tekniği"},
+  {name:"Dips (Paralel Bar)",cat:"dip",detail:"4 Set × 12 Tekrar",rest:60,sets:4,yt:"paralel barda dips tekniği"},
+  {name:"Elmas (Diamond) Şınav",cat:"pushup",detail:"3 Set × 10 Tekrar (Triceps için)",rest:60,sets:3,yt:"diamond push up elmas şınav"}
+];
+var m2_sal=[
+  {name:"Zıplamalı Squat (Jump Squat)",cat:"jump",detail:"4 Set × 15 Tekrar",rest:60,sets:4,yt:"jump squat tekniği"},
+  {name:"Bulgarian Split Squat",cat:"lunge",detail:"3 Set × 12 Tekrar (Her bacak)",rest:60,sets:3,yt:"bulgarian split squat tekniği"},
+  {name:"Hanging Knee Raise (Barda Karın)",cat:"core",detail:"4 Set × 12 Tekrar",rest:45,sets:4,yt:"hanging knee raise barda karın hareketi"}
+];
+var m2_car=[{name:"Ağırlık Yelekli Yürüyüş (Rucking)",cat:"ruck",detail:"50 Dakika — Kondisyon Arttı",rest:0,sets:1,yt:"rucking kondisyon geliştirme"}];
+var m2_cmt=[{name:"Rucking + Sprint",cat:"ruck",detail:"50 Dakika — Yürüyüş içinde 3 × 1 dakika sprint/depar",rest:0,sets:1,yt:"rucking sprint interval antrenmanı"}];
+var m2_cum=m2_sal.concat([{name:"Akşam Yelekli Yürüyüş",cat:"ruck",detail:"45 Dakika",rest:0,sets:1,yt:"akşam rucking yürüyüşü"}]);
+
+var m3_pzt=[
+  {name:"Süper Set: Barfiks + Şınav",cat:"pullup",detail:"4 Set × (6-8 Barfiks + 20 Şınav) — dinlenmeden art arda",rest:90,sets:4,yt:"barfiks şınav süper set antrenmanı",note:"Süper Set — iki hareketi aralıksız yap"},
+  {name:"Süper Set: Dips + Chin-up",cat:"dip",detail:"4 Set × (12 Dips + 6 Chin-up) — dinlenmeden art arda",rest:90,sets:4,yt:"dips chin up süper set",note:"Süper Set — iki hareketi aralıksız yap"},
+  {name:"Komando Şınavı",cat:"pushup",detail:"3 Set × 15 Tekrar",rest:60,sets:3,yt:"komando şınavı hareketi nasıl yapılır"}
+];
+var m3_sal=[
+  {name:"Süper Set: Burpee + Jump Squat",cat:"jump",detail:"4 Set × (10 Burpee + 15 Squat) — dinlenmeden art arda",rest:90,sets:4,yt:"burpee jump squat süper set",note:"Süper Set — iki hareketi aralıksız yap"},
+  {name:"Walking Lunge",cat:"lunge",detail:"4 Set × 20 Adım",rest:60,sets:4,yt:"walking lunge tekniği"},
+  {name:"V-Ups (Çakı Karın) / Plank",cat:"core",detail:"4 Set × 15 Tekrar veya 60 Saniye",rest:45,sets:4,yt:"v-ups çakı karın hareketi"}
+];
+var m3_car=[{name:"Ağırlık Yelekli Yürüyüş (Rucking)",cat:"ruck",detail:"60 Dakika — Zirve Kondisyon",rest:0,sets:1,yt:"rucking zirve kondisyon yürüyüşü"}];
+var m3_cmt=[{name:"Zirve Yağ Yakımı Yürüyüşü",cat:"ruck",detail:"60 Dakika — Tempolu (yeleksiz de olabilir)",rest:0,sets:1,yt:"tempolu yürüyüş yağ yakımı"}];
+var m3_cum=m3_sal.concat([{name:"Akşam Yelekli Yürüyüş",cat:"ruck",detail:"45 Dakika",rest:0,sets:1,yt:"akşam rucking yürüyüşü"}]);
+
+var MONTHS=[
+ {id:1,title:"1. Ay",subtitle:"Temel Güç ve Nöral Adaptasyon",range:"1–30. Gün",vest:"8–9 kg",
+  goal:"88 kilo vücut ağırlığına eklemleri alıştırmak, barfiks sayısını artırmak ve rucking ile hızlıca yağ yakımını başlatmak.",
+  days:{
+   pzt:{type:"Üst Vücut & Core",blocks:m1_pzt},
+   sal:{type:"Alt Vücut (Bacak)",blocks:m1_sal},
+   car:{type:"Askeri Rucking",blocks:m1_car},
+   per:{type:"Üst Vücut & Core",blocks:m1_pzt,note:"Pazartesi programının tekrarı"},
+   cum:{type:"Alt Vücut + Rucking",blocks:m1_cum,note:"Gündüz bacak rutini, akşam yürüyüş"},
+   cmt:{type:"Aktif Yağ Yakımı",blocks:m1_cmt},
+   paz:{type:"Tam Dinlenme",blocks:[],restday:true,note:"Kas tamiri ve dinlenme — bol su ve protein tüket."}
+  }},
+ {id:2,title:"2. Ay",subtitle:"Kas Kütlesi ve Dayanıklılık",range:"31–60. Gün",vest:"10–12 kg",
+  goal:"Kilon 83-84 bandına düştükçe hareketleri tamamen nizami yapmak, tekrarları artırmak ve omuz-sırt hattını genişletmek.",
+  days:{
+   pzt:{type:"Üst Vücut (Hacim)",blocks:m2_pzt},
+   sal:{type:"Alt Vücut & Core",blocks:m2_sal},
+   car:{type:"Askeri Rucking",blocks:m2_car},
+   per:{type:"Üst Vücut (Hacim)",blocks:m2_pzt,note:"Pazartesi programının tekrarı"},
+   cum:{type:"Alt Vücut + Rucking",blocks:m2_cum,note:"Gündüz bacak rutini, akşam yürüyüş"},
+   cmt:{type:"HIIT + Rucking",blocks:m2_cmt},
+   paz:{type:"Tam Dinlenme",blocks:[],restday:true,note:"Kas tamiri ve dinlenme."}
+  }},
+ {id:3,title:"3. Ay",subtitle:"Parçalı Vücut ve Patlayıcı Güç",range:"61–90. Gün",vest:"12–15 kg (veya yeleksiz tempolu rucking)",
+  goal:"Yağ oranını %13-14 bandına çekmek, kasları tamamen hatlı hale getirmek ve askeri kondisyonun zirvesine ulaşmak. Süper set mantığı.",
+  days:{
+   pzt:{type:"Üst Vücut Parçalama",blocks:m3_pzt},
+   sal:{type:"Patlayıcı Bacak & Core",blocks:m3_sal},
+   car:{type:"Askeri Rucking",blocks:m3_car},
+   per:{type:"Üst Vücut Parçalama",blocks:m3_pzt,note:"Pazartesi programının tekrarı"},
+   cum:{type:"Alt Vücut + Rucking",blocks:m3_cum,note:"Gündüz bacak rutini, akşam yürüyüş"},
+   cmt:{type:"Zirve Yağ Yakımı",blocks:m3_cmt},
+   paz:{type:"Tam Dinlenme",blocks:[],restday:true,note:"Kas tamiri ve dinlenme."}
+  }}
+];
+
+var WK_KEYS=["paz","pzt","sal","car","per","cum","cmt"]; /* JS getDay(): 0 Sun..6 Sat */
+var WK_NAMES={pzt:"Pazartesi",sal:"Salı",car:"Çarşamba",per:"Perşembe",cum:"Cuma",cmt:"Cumartesi",paz:"Pazar"};
+var WK_SHORT={pzt:"PZT",sal:"SAL",car:"ÇAR",per:"PER",cum:"CUM",cmt:"CMT",paz:"PAZ"};
+var DAY_ORDER=["pzt","sal","car","per","cum","cmt","paz"];
+
+/* ================= ICONS ================= */
+function icon(cat){
+  var extra="";
+  if(cat==="pullup") extra='<line x1="18" y1="14" x2="82" y2="14" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>';
+  if(cat==="dip") extra='<line x1="30" y1="18" x2="30" y2="42" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><line x1="70" y1="18" x2="70" y2="42" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>';
+  if(cat==="ruck") extra='<rect x="44" y="34" width="14" height="18" rx="3" fill="currentColor" opacity=".5"/>';
+  if(cat==="pushup"||cat==="core") extra='<line x1="10" y1="80" x2="90" y2="80" stroke="currentColor" stroke-width="3" opacity=".35"/>';
+  if(cat==="squat"||cat==="lunge"||cat==="jump") extra='<line x1="10" y1="92" x2="90" y2="92" stroke="currentColor" stroke-width="3" opacity=".35"/>';
+
+  if(cat==="pullup"||cat==="dip"){
+    return '<svg viewBox="0 0 100 100" class="pictogram cat-'+cat+'" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round">'+extra+
+    '<g class="move"><circle cx="50" cy="24" r="8" fill="currentColor" stroke="none"/><line x1="50" y1="32" x2="50" y2="60"/><line x1="50" y1="38" x2="34" y2="20"/><line x1="50" y1="38" x2="66" y2="20"/><line x1="50" y1="60" x2="38" y2="82"/><line x1="50" y1="60" x2="62" y2="82"/></g></svg>';
+  }
+  if(cat==="pushup"){
+    return '<svg viewBox="0 0 100 100" class="pictogram cat-pushup" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round">'+extra+
+    '<g class="move"><circle cx="16" cy="58" r="8" fill="currentColor" stroke="none"/><line x1="24" y1="60" x2="70" y2="72"/><line x1="70" y1="72" x2="88" y2="58"/><line x1="70" y1="72" x2="86" y2="86"/><line x1="40" y1="63" x2="30" y2="82"/></g></svg>';
+  }
+  if(cat==="core"){
+    return '<svg viewBox="0 0 100 100" class="pictogram cat-core" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round">'+extra+
+    '<circle cx="16" cy="58" r="8" fill="currentColor" stroke="none"/><line x1="24" y1="60" x2="60" y2="66"/><line x1="18" y1="55" x2="16" y2="40"/>'+
+    '<g class="legs"><line x1="38" y1="64" x2="66" y2="40"/><line x1="66" y1="40" x2="86" y2="46"/></g></svg>';
+  }
+  if(cat==="squat"){
+    return '<svg viewBox="0 0 100 100" class="pictogram cat-squat" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round">'+extra+
+    '<g class="move"><circle cx="50" cy="22" r="8" fill="currentColor" stroke="none"/><line x1="50" y1="30" x2="50" y2="58"/><line x1="50" y1="36" x2="34" y2="48"/><line x1="50" y1="36" x2="66" y2="48"/><line x1="50" y1="58" x2="36" y2="76"/><line x1="36" y1="76" x2="36" y2="92"/><line x1="50" y1="58" x2="64" y2="76"/><line x1="64" y1="76" x2="64" y2="92"/></g></svg>';
+  }
+  if(cat==="lunge"){
+    return '<svg viewBox="0 0 100 100" class="pictogram cat-lunge" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round">'+extra+
+    '<circle cx="50" cy="20" r="8" fill="currentColor" stroke="none"/><line x1="50" y1="28" x2="50" y2="58"/><line x1="50" y1="34" x2="36" y2="46"/><line x1="50" y1="34" x2="64" y2="46"/>'+
+    '<g class="front"><line x1="50" y1="58" x2="30" y2="70"/><line x1="30" y1="70" x2="24" y2="92"/></g><line x1="50" y1="58" x2="64" y2="80"/><line x1="64" y1="80" x2="60" y2="92"/></svg>';
+  }
+  if(cat==="jump"){
+    return '<svg viewBox="0 0 100 100" class="pictogram cat-jump" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round">'+extra+
+    '<g class="move"><circle cx="50" cy="20" r="8" fill="currentColor" stroke="none"/><line x1="50" y1="28" x2="50" y2="54"/><line x1="50" y1="34" x2="30" y2="24"/><line x1="50" y1="34" x2="70" y2="24"/><line x1="50" y1="54" x2="34" y2="78"/><line x1="50" y1="54" x2="66" y2="78"/></g></svg>';
+  }
+  if(cat==="ruck"){
+    return '<svg viewBox="0 0 100 100" class="pictogram cat-ruck" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round">'+extra+
+    '<circle cx="50" cy="22" r="8" fill="currentColor" stroke="none"/><line x1="50" y1="30" x2="50" y2="62"/><line x1="50" y1="38" x2="36" y2="30"/><line x1="50" y1="38" x2="66" y2="50"/>'+
+    '<line class="legL" x1="50" y1="62" x2="36" y2="90"/><line class="legR" x1="50" y1="62" x2="64" y2="90"/></svg>';
+  }
+  if(cat==="rest"){
+    return '<svg viewBox="0 0 100 100" class="pictogram cat-rest" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round">'+
+    '<path d="M20 66 q30 -14 60 0 q-6 16 -30 16 q-24 0 -30 -16z"/><line x1="20" y1="66" x2="20" y2="84"/><line x1="80" y1="66" x2="80" y2="84"/>'+
+    '<g class="zz" stroke-width="4"><path d="M58 20 h14 l-14 12 h14"/><path d="M70 34 h9 l-9 8 h9" stroke-width="3"/></g></svg>';
+  }
+  return '<svg viewBox="0 0 100 100" class="pictogram"></svg>';
+}
+function ytUrl(term){ return "https://www.youtube.com/results?search_query="+encodeURIComponent(term); }
+
+/* ================= STATE / STORAGE ================= */
+var LS_START="k90_start", LS_PROG="k90_progress";
+function loadStart(){ try{ return localStorage.getItem(LS_START); }catch(e){ return null; } }
+function saveStart(v){ try{ localStorage.setItem(LS_START,v); }catch(e){} }
+function loadProgress(){ try{ var raw=localStorage.getItem(LS_PROG); return raw?JSON.parse(raw):{}; }catch(e){ return {}; } }
+function saveProgress(p){ try{ localStorage.setItem(LS_PROG,JSON.stringify(p)); }catch(e){} }
+
+var progress=loadProgress();
+var startDateStr=loadStart();
+var currentTab="today";
+var currentMonth=1;
+
+/* ================= DATE HELPERS ================= */
+function dOnly(d){ return new Date(d.getFullYear(),d.getMonth(),d.getDate()); }
+function todayDate(){ return dOnly(new Date()); }
+function parseYMD(s){ var p=s.split("-"); return new Date(+p[0],+p[1]-1,+p[2]); }
+function toYMD(d){ var y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0"); return y+"-"+m+"-"+day; }
+function addDays(d,n){ var r=new Date(d); r.setDate(r.getDate()+n); return r; }
+function dayNumFor(d){ if(!startDateStr) return null; var start=dOnly(parseYMD(startDateStr)); return Math.round((dOnly(d)-start)/86400000)+1; }
+var MONTH_NAMES_TR=["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
+function humanDate(d){ return d.getDate()+" "+MONTH_NAMES_TR[d.getMonth()]; }
+function phaseForN(n){ if(n==null||n<1) return null; if(n<=30) return MONTHS[0]; if(n<=60) return MONTHS[1]; if(n<=90) return MONTHS[2]; return "done"; }
+
+/* ================= PROGRESS LOGIC ================= */
+function dayDefFor(dateObj){
+  var n=dayNumFor(dateObj); var phase=phaseForN(n);
+  if(!phase||phase==="done") return null;
+  var wk=WK_KEYS[dateObj.getDay()];
+  return {n:n,phase:phase,wk:wk,def:phase.days[wk]};
+}
+function isDayFull(dateObj){
+  var info=dayDefFor(dateObj); if(!info) return false;
+  var def=info.def;
+  if(def.restday) return true;
+  var blocks=def.blocks;
+  if(!blocks||blocks.length===0) return true;
+  var rec=progress[toYMD(dateObj)];
+  var sets=(rec&&rec.sets)||{};
+  for(var i=0;i<blocks.length;i++){ if((sets[i]||0) < (blocks[i].sets||1)) return false; }
+  return true;
+}
+function advanceSet(idx){
+  var info=dayDefFor(todayDate()); if(!info||info.def.restday) return;
+  var block=info.def.blocks[idx]; if(!block) return;
+  var total=block.sets||1;
+  var t=toYMD(todayDate());
+  if(!progress[t]) progress[t]={sets:{}};
+  if(!progress[t].sets) progress[t].sets={};
+  var cur=progress[t].sets[idx]||0;
+  progress[t].sets[idx]=(cur+1)%(total+1);
+  saveProgress(progress);
+  render();
+}
+function toggleCompleteToday(){
+  var info=dayDefFor(todayDate()); if(!info||info.def.restday) return;
+  var t=toYMD(todayDate());
+  var blocks=info.def.blocks;
+  var full=isDayFull(todayDate());
+  var newSets={};
+  if(!full){ for(var i=0;i<blocks.length;i++) newSets[i]=blocks[i].sets||1; }
+  progress[t]={sets:newSets};
+  saveProgress(progress);
+  render();
+}
+function computeStreak(){
+  var d=todayDate();
+  if(!isDayFull(d)) d=addDays(d,-1);
+  var streak=0;
+  while(dayNumFor(d)>=1){
+    if(isDayFull(d)){ streak++; d=addDays(d,-1); } else break;
+  }
+  return streak;
+}
+
+/* ================= RENDER: TODAY ================= */
+var MARCH_WORDS=["MARŞ MARŞ","İLERLE KOMANDO","BİR DAHA","TAM GAZ","SONUNA KADAR"];
+function renderExRow(b,idx,interactive){
+  var total=b.sets||1;
+  var achieved=0;
+  if(interactive){
+    var t=toYMD(todayDate());
+    var rec=progress[t];
+    achieved=(rec&&rec.sets&&rec.sets[idx])||0;
+  }
+  var done=achieved>=total;
+  var html='<div class="exrow'+(done?' done':'')+'">';
+  html+='<div class="exrow-top">';
+  html+='<div class="pictogram-wrap">'+icon(b.cat)+'</div>';
+  html+='<div class="exbody">';
+  html+='<div class="exname">'+b.name+'</div>';
+  html+='<div class="exdetail">'+b.detail+'</div>';
+  if(b.note) html+='<div class="exnote">'+b.note+'</div>';
+  html+='<div class="exmeta">';
+  if(b.rest>0) html+='<button type="button" class="rest-btn" data-rest="'+b.rest+'">⏱ '+b.rest+' sn dinlenme</button>';
+  html+='<a class="ytbtn" href="'+ytUrl(b.yt||b.name)+'" target="_blank" rel="noopener"><svg class="yicon" viewBox="0 0 24 24" fill="currentColor"><path d="M23 12s0-3.8-.5-5.6c-.3-1-1-1.8-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4c-1 .2-1.7 1-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6c.3 1 1 1.7 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4c1-.3 1.7-1 2-2 .5-1.8.5-5.6.5-5.6zM9.8 15.5v-7l6 3.5-6 3.5z"/></svg>YouTube</a>';
+  html+='</div></div></div>';
+  if(interactive){
+    if(total>1){
+      html+='<div class="setpips">';
+      for(var p=0;p<total;p++) html+='<div class="pip'+(p<achieved?' filled':'')+'"></div>';
+      html+='</div>';
     }
+    var label = done ? "GÖREV TAMAMLANDI ✓" : MARCH_WORDS[idx%MARCH_WORDS.length];
+    var progressTxt = total>1 ? (achieved+" / "+total+" SET") : (done ? "TAMAM" : "DOKUN");
+    html+='<button type="button" class="advance-btn" data-idx="'+idx+'"><span>'+label+'</span><span class="ab-progress">'+progressTxt+(done?' · sıfırla':'')+'</span></button>';
+  }
+  html+='</div>';
+  return html;
+}
 
-    function getPhase2Data(weekNum) {
-        return {
-            phaseDesc: `<strong>🚀 Faz 2: Hacim Artışı (Hafta ${weekNum})</strong><br><strong>Amaç:</strong> Kas hacmi + Yoğunluk artırımı[cite: 1].<br><strong>Kardiyo:</strong> Antrenman sonu 15 dk 10 eğim 5 hız[cite: 1].`,
-            days: {
-                pazartesi: { title: "Pazartesi: Üst Vücut (Hacim)", exercises: [{ id: "ex19", name: "SM Seated Shoulder Press", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex20", name: "Weighted Pull-Up", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex21", name: "Incline Chest Press", sets: 3, reps: "8-10", rir: "1-2", tech: "" }, { id: "ex22", name: "Pec Deck", sets: 3, reps: "10", rir: "0", tech: "" }, { id: "ex23", name: "DB Lateral Raise", sets: 3, reps: "12 + Son Set", rir: "0", tech: "RP" }] },
-                sali: { title: "Salı: Alt Vücut (Hacim)", exercises: [{ id: "ex24", name: "Leg Press", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex25", name: "Walking Lunge", sets: 2, reps: "20", rir: "0", tech: "" }, { id: "ex26", name: "Leg Extension", sets: 3, reps: "10", rir: "0", tech: "" }, { id: "ex27", name: "Leg Curl", sets: 3, reps: "10", rir: "0", tech: "" }] },
-                persembe: { title: "Perşembe: Göğüs + Sırt (Hacim)", exercises: [{ id: "ex28", name: "Normal Grip Lat Pulldown", sets: 3, reps: "8-10", rir: "1-2", tech: "" }, { id: "ex29", name: "SM Incline Bench Press", sets: 3, reps: "8-10", rir: "1-2", tech: "" }, { id: "ex30", name: "Chest Supported DB Row", sets: 3, reps: "10", rir: "1-2", tech: "SS" }, { id: "ex31", name: "Incline DB Press", sets: 3, reps: "10", rir: "1-2", tech: "SS" }] },
-                cuma: { title: "Cuma: Omuz + Kol (Hacim)", exercises: [{ id: "ex32", name: "Machine Shoulder Press", sets: 3, reps: "8-10", rir: "1-2", tech: "" }, { id: "ex33", name: "Lateral Raise", sets: 3, reps: "12 + Son Set", rir: "0", tech: "RP" }, { id: "ex34", name: "Cable Upright Row", sets: 3, reps: "12", rir: "0", tech: "" }, { id: "ex35", name: "Cable Rear Delt Fly", sets: 3, reps: "12", rir: "0", tech: "" }] }
-            }
-        };
+function renderToday(){
+  var t=todayDate();
+  var n=dayNumFor(t);
+  if(n===null){ return renderNoStart(); }
+  if(n<1){
+    return '<div class="card future-card"><div class="fi">⏳</div><h3 style="margin:10px 0 6px;">Programın '+(1-n)+' gün sonra başlıyor</h3><p style="font-size:13px;color:var(--text-dim);">Başlangıç tarihi: '+humanDate(parseYMD(startDateStr))+'</p></div>';
+  }
+  var phase=phaseForN(n);
+  if(phase==="done"){
+    return '<div class="card done-card"><div class="fi">🏁</div><h3 style="margin:10px 0 6px;">Program Tamamlandı!</h3><p style="font-size:13px;color:var(--text-dim);">90 günlük protokolü bitirdin. İlerleme sekmesinden özetine bakabilirsin.</p></div>';
+  }
+  var wk=WK_KEYS[t.getDay()];
+  var def=phase.days[wk];
+  var pct=Math.round((Math.min(n,90)/90)*100);
+  var streak=computeStreak();
+
+  var html='<div class="hero"><div class="hero-top">';
+  html+='<div><div class="hero-daynum">GÜN '+n+'<span style="font-size:16px;opacity:.7;">/90</span></div><div class="hero-sub">'+WK_NAMES[wk]+' · '+humanDate(t)+'</div></div>';
+  html+='<div style="text-align:right;"><div class="hero-phase">'+phase.title.toUpperCase()+'</div><div class="hero-sub">Yelek: '+phase.vest+'</div></div>';
+  html+='</div><div class="progressbar"><i style="width:'+pct+'%"></i></div>';
+  html+='<div class="stat-row">';
+  html+='<div class="stat-chip"><b>'+streak+'</b><span>Gün Seri</span></div>';
+  html+='<div class="stat-chip"><b>'+(90-n+1)+'</b><span>Gün Kaldı</span></div>';
+  html+='<div class="stat-chip"><b>'+phase.id+'/3</b><span>Faz</span></div>';
+  html+='</div></div>';
+
+  html+='<div class="section-title"><h2>Bugünün Antrenmanı</h2><span class="pill">'+WK_SHORT[wk]+'</span></div>';
+
+  if(def.restday){
+    html+='<div class="card restday-card">'+icon("rest")+'<h3>Tam Dinlenme Günü</h3><p>'+def.note+'</p></div>';
+  }else{
+    html+='<div class="card" style="padding:14px;"><div class="daytype">'+def.type+'</div>';
+    if(def.note) html+='<div class="day-note">'+def.note+'</div>';
+    html+='<div class="exlist">';
+    for(var i=0;i<def.blocks.length;i++) html+=renderExRow(def.blocks[i],i,true);
+    html+='</div>';
+    var full=isDayFull(t);
+    html+='<button class="btn '+(full?'ghost':'primary')+'" style="width:100%;margin-top:14px;" data-action="complete-day">'+(full?'✓ Bugünkü Antrenman Tamamlandı':'Günü Tamamla')+'</button>';
+    html+='</div>';
+  }
+  return html;
+}
+function renderNoStart(){
+  return '<div class="card future-card"><div class="fi">🪖</div><h3 style="margin:10px 0 6px;">Henüz Başlamadın</h3><p style="font-size:13px;color:var(--text-dim);">Sağ üstteki ayarlar simgesinden başlangıç tarihini seç.</p></div>';
+}
+
+/* ================= RENDER: PROGRAM ================= */
+function renderProgram(){
+  var today=todayDate();
+  var todayN=dayNumFor(today);
+  var todayWk=WK_KEYS[today.getDay()];
+  var phase=MONTHS[currentMonth-1];
+  var html='<div class="segmented">';
+  MONTHS.forEach(function(m){ html+='<button type="button" class="month-tab'+(m.id===currentMonth?' active':'')+'" data-month="'+m.id+'">'+m.title+'</button>'; });
+  html+='</div>';
+  html+='<div class="card month-info"><div class="eyebrow">'+phase.range+' · Yelek '+phase.vest+'</div><h3>'+phase.subtitle+'</h3><p>'+phase.goal+'</p></div>';
+
+  DAY_ORDER.forEach(function(wk){
+    var def=phase.days[wk];
+    var isToday=(todayN!=null && phaseForN(todayN)===phase && todayWk===wk);
+    var openDefault = isToday || (wk===DAY_ORDER[0] && !(todayN!=null && phaseForN(todayN)===phase));
+    html+='<div class="card daycard'+(isToday?' today':'')+(openDefault?' open':'')+'" data-day="'+wk+'">';
+    html+='<div class="day-head"><div class="dh-left"><div class="day-badge">'+WK_SHORT[wk]+'</div><div><div class="dh-name">'+WK_NAMES[wk]+(isToday?' · Bugün':'')+'</div><div class="dh-type">'+def.type+'</div></div></div><div class="chev">▾</div></div>';
+    html+='<div class="day-body"><div class="day-body-inner">';
+    if(def.note) html+='<div class="day-note">'+def.note+'</div>';
+    if(def.restday){
+      html+='<div style="display:flex;align-items:center;gap:12px;padding:8px 0;">'+icon("rest")+'<div style="font-size:12.5px;color:var(--text-dim);">'+def.note+'</div></div>';
+    }else{
+      html+='<div class="exlist">';
+      for(var i=0;i<def.blocks.length;i++) html+=renderExRow(def.blocks[i],i,false);
+      html+='</div>';
     }
+    html+='</div></div></div>';
+  });
+  return html;
+}
 
-    function getPhase3Data(weekNum) {
-        return {
-            phaseDesc: `<strong>💎 Faz 3: Estetik Tanımlama (Hafta ${weekNum})</strong><br><strong>Amaç:</strong> Kas detaylarını ortaya çıkar[cite: 1].<br><strong>Teknikler:</strong> RPT + RP + Drop Set (DS)[cite: 1].`,
-            days: {
-                pazartesi: { title: "Pazartesi: Üst Vücut (Tanımlama)", exercises: [{ id: "ex36", name: "SM Incline Bench Press", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex37", name: "Weighted Pull-Up", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex38", name: "Machine Shoulder Press", sets: 3, reps: "8-10", rir: "1-2", tech: "" }, { id: "ex39", name: "DB Lateral Raise", sets: 3, reps: "12 + Son Set", rir: "0", tech: "RP" }] },
-                sali: { title: "Salı: Alt Vücut (Tanımlama)", exercises: [{ id: "ex40", name: "Back Squat", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex41", name: "Leg Extension", sets: 3, reps: "12 + Son Set", rir: "0", tech: "DS" }, { id: "ex42", name: "Leg Curl", sets: 3, reps: "12 + Son Set", rir: "0", tech: "DS" }, { id: "ex43", name: "Walking Lunge", sets: 2, reps: "20", rir: "0", tech: "" }] },
-                persembe: { title: "Perşembe: Göğüs + Sırt (Tanımlama)", exercises: [{ id: "ex44", name: "SM Incline Bench Press", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex45", name: "Chest Supported DB Row", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex46", name: "Machine Chest Press", sets: 2, reps: "12 + Son Set", rir: "0", tech: "DS" }, { id: "ex47", name: "Reverse Grip Lat Pulldown", sets: 2, reps: "12 + Son Set", rir: "0", tech: "DS" }] },
-                cuma: { title: "Cuma: Omuz + Kol (Tanımlama)", exercises: [{ id: "ex48", name: "Machine Shoulder Press", sets: 3, reps: "6-8-10", rir: "1-2", tech: "RPT" }, { id: "ex49", name: "Lateral Raise", sets: 3, reps: "12 + Son Set", rir: "0", tech: "RP" }, { id: "ex50", name: "Reverse Pec Deck", sets: 3, reps: "12 + Son Set", rir: "0", tech: "DS" }, { id: "ex51", name: "Facepull", sets: 3, reps: "12", rir: "0", tech: "" }] }
-            }
-        };
+/* ================= RENDER: PROGRESS ================= */
+function renderProgress(){
+  var today=todayDate();
+  var n=dayNumFor(today);
+  if(n===null) return renderNoStart();
+  var streak=computeStreak();
+  var doneCount=0, dotsHtml="";
+  var start=dOnly(parseYMD(startDateStr));
+  for(var i=1;i<=90;i++){
+    var d=addDays(start,i-1);
+    var wk=WK_KEYS[d.getDay()];
+    var cls="dot";
+    if(dOnly(d) > today){ cls+=" future"; }
+    else if(wk==="paz"){ cls+=" rest"; }
+    else if(i===n){ cls+= isDayFull(d)? " done":" today"; if(isDayFull(d)) doneCount++; }
+    else { if(isDayFull(d)){ cls+=" done"; doneCount++; } else { cls+=" missed"; } }
+    dotsHtml+='<div class="'+cls+'" title="Gün '+i+' · '+humanDate(d)+'"></div>';
+  }
+  var html='<div class="statgrid">';
+  html+='<div class="card statcard"><b>'+doneCount+'</b><span>Tamamlanan Gün</span></div>';
+  html+='<div class="card statcard"><b>'+streak+'</b><span>Güncel Seri</span></div>';
+  html+='<div class="card statcard"><b>'+Math.min(n,90)+'/90</b><span>Gün</span></div>';
+  html+='</div>';
+
+  html+='<div class="section-title"><h2>Faz İlerlemesi</h2></div><div class="card phasebars">';
+  MONTHS.forEach(function(m){
+    var rangeStart=(m.id-1)*30+1, rangeEnd=m.id*30, total=0, done2=0;
+    for(var j=rangeStart;j<=rangeEnd;j++){
+      var dd=addDays(start,j-1);
+      var wkj=WK_KEYS[dd.getDay()];
+      if(wkj==="paz") continue;
+      total++;
+      if(dOnly(dd)<=today && isDayFull(dd)) done2++;
     }
+    var pct=total? Math.round(done2/total*100):0;
+    html+='<div class="phaserow"><div class="pr-top"><span>'+m.title+' — '+m.subtitle+'</span><span>'+done2+'/'+total+'</span></div><div class="pr-track"><i style="width:'+pct+'%"></i></div></div>';
+  });
+  html+='</div>';
 
-    window.onload = function() {
-        const select = document.getElementById('weekSelect');
-        for(let i=1; i<=12; i++) {
-            let opt = document.createElement('option');
-            opt.value = i;
-            opt.innerText = i + ". Hafta";
-            select.appendChild(opt);
-        }
-        select.value = currentWeek;
-        updateHomeUI();
+  html+='<div class="section-title"><h2>90 Günlük Harita</h2></div>';
+  html+='<div class="card"><div class="dotgrid">'+dotsHtml+'</div><div class="legend">';
+  html+='<span><i style="background:var(--success);"></i>Tamamlandı</span>';
+  html+='<span><i style="background:var(--accent);"></i>Bugün</span>';
+  html+='<span><i style="background:var(--danger-bg);border:1px solid var(--danger);"></i>Kaçırıldı</span>';
+  html+='<span><i style="background:transparent;border:1px dashed var(--line);"></i>Dinlenme</span>';
+  html+='<span><i style="background:var(--surface-2);border:1px solid var(--line);opacity:.6;"></i>Gelecek</span>';
+  html+='</div></div>';
+  return html;
+}
+
+/* ================= MASTER RENDER ================= */
+var viewEl=document.getElementById("view");
+function render(){
+  document.querySelectorAll(".navbtn").forEach(function(b){ b.classList.toggle("active", b.dataset.tab===currentTab); });
+  if(!startDateStr){ document.getElementById("onboarding").hidden=false; }
+  var html="";
+  if(currentTab==="today") html=renderToday();
+  else if(currentTab==="program") html=renderProgram();
+  else if(currentTab==="progress") html=renderProgress();
+  viewEl.innerHTML=html;
+}
+
+/* ================= REST TIMER ================= */
+var audioCtx=null;
+function beep(){
+  try{
+    audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+    var o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.connect(g); g.connect(audioCtx.destination);
+    o.frequency.value=880;
+    g.gain.setValueAtTime(0.0001,audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.22,audioCtx.currentTime+0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.4);
+    o.start(); o.stop(audioCtx.currentTime+0.42);
+  }catch(e){}
+}
+function startRest(btn){
+  if(btn.dataset.running==="1") return;
+  var secs=parseInt(btn.dataset.rest,10); if(!secs) return;
+  var orig=btn.textContent;
+  btn.dataset.running="1"; btn.classList.add("running");
+  var remain=secs;
+  function tick(){
+    if(remain<=0){
+      clearInterval(iv); btn.dataset.running="0"; btn.classList.remove("running"); btn.classList.add("done-flash");
+      btn.textContent="✓ Bitti"; beep();
+      setTimeout(function(){ btn.textContent=orig; btn.classList.remove("done-flash"); },1600);
+      return;
     }
+    btn.textContent="⏱ "+remain+" sn"; remain--;
+  }
+  tick();
+  var iv=setInterval(tick,1000);
+}
 
-    function changeWeek() {
-        currentWeek = document.getElementById('weekSelect').value;
-        localStorage.setItem('creed_current_week', currentWeek);
-        updateHomeUI();
-    }
+/* ================= EVENTS ================= */
+viewEl.addEventListener("click", function(e){
+  var restBtn=e.target.closest(".rest-btn"); if(restBtn){ startRest(restBtn); return; }
+  var advBtn=e.target.closest(".advance-btn"); if(advBtn){ advanceSet(+advBtn.dataset.idx); return; }
+  var head=e.target.closest(".day-head"); if(head){ head.closest(".daycard").classList.toggle("open"); return; }
+  var mtab=e.target.closest(".month-tab"); if(mtab){ currentMonth=+mtab.dataset.month; render(); return; }
+  var cbtn=e.target.closest('[data-action="complete-day"]'); if(cbtn){ toggleCompleteToday(); return; }
+});
+document.querySelectorAll(".navbtn").forEach(function(b){
+  b.addEventListener("click", function(){ currentTab=b.dataset.tab; render(); });
+});
 
-    function updateHomeUI() {
-        const data = weeksData[currentWeek];
-        document.getElementById('phase-info').innerHTML = data.phaseDesc;
-        document.getElementById('week-title-header').innerText = `📅 ${currentWeek}. Hafta Antrenmanları`;
-        
-        ['pazartesi', 'sali', 'persembe', 'cuma'].forEach(day => {
-            let btn = document.getElementById(`btn-${day}`);
-            let badge = document.getElementById(`badge-${day}`);
-            let isCompleted = localStorage.getItem(`creed_w${currentWeek}_${day}`);
-            
-            if(isCompleted) {
-                btn.classList.add('completed');
-                badge.innerText = "TAMAMLANDI ✓";
-            } else {
-                btn.classList.remove('completed');
-                badge.innerText = "BAŞLA";
-            }
-        });
-        updateCalendarUI();
-    }
+/* settings / onboarding */
+var onboarding=document.getElementById("onboarding");
+var settingsSheet=document.getElementById("settingsSheet");
+var startDateInput=document.getElementById("startDateInput");
+var settingsDateInput=document.getElementById("settingsDateInput");
 
-    function updateCalendarUI() {
-        const calList = document.getElementById('calendar-list');
-        calList.innerHTML = '';
+document.getElementById("startProgramBtn").addEventListener("click", function(){
+  var v=startDateInput.value || toYMD(todayDate());
+  startDateStr=v; saveStart(v);
+  onboarding.hidden=true;
+  render();
+});
+document.getElementById("settingsBtn").addEventListener("click", function(){
+  settingsDateInput.value = startDateStr || toYMD(todayDate());
+  document.getElementById("resetConfirm").hidden=true;
+  settingsSheet.hidden=false;
+});
+document.getElementById("closeSettingsBtn").addEventListener("click", function(){ settingsSheet.hidden=true; });
+document.getElementById("saveSettingsBtn").addEventListener("click", function(){
+  var v=settingsDateInput.value; if(!v) return;
+  startDateStr=v; saveStart(v);
+  settingsSheet.hidden=true;
+  render();
+});
+var resetArmed=false;
+document.getElementById("resetBtn").addEventListener("click", function(){
+  var confirmEl=document.getElementById("resetConfirm");
+  if(!resetArmed){ resetArmed=true; confirmEl.hidden=false; setTimeout(function(){resetArmed=false;confirmEl.hidden=true;},4000); return; }
+  progress={}; saveProgress(progress);
+  try{ localStorage.removeItem(LS_START); }catch(e){}
+  startDateStr=null;
+  settingsSheet.hidden=true;
+  render();
+  onboarding.hidden=false;
+});
 
-        const daysMap = [
-            { key: 'pazartesi', name: 'Pazartesi: Üst Vücut' },
-            { key: 'sali', name: 'Salı: Alt Vücut' },
-            { key: 'persembe', name: 'Perşembe: Göğüs + Sırt' },
-            { key: 'cuma', name: 'Cuma: Omuz + Kol' }
-        ];
+/* init */
+startDateInput.value=toYMD(todayDate());
+render();
+})();
+</script>
 
-        daysMap.forEach(d => {
-            let isDone = localStorage.getItem(`creed_w${currentWeek}_${d.key}`);
-            let statusHtml = isDone 
-                ? `<div class="cal-item-status status-done">✓ Yapıldı</div>` 
-                : `<div class="cal-item-status status-pending">Bekliyor</div>`;
-
-            calList.innerHTML += `
-                <div class="cal-item" onclick="toggleDayStatus('${d.key}')">
-                    <div class="cal-item-info">${d.name}</div>
-                    ${statusHtml}
-                </div>
-            `;
-        });
-    }
-
-    function toggleDayStatus(dayKey) {
-        let storageKey = `creed_w${currentWeek}_${dayKey}`;
-        if(localStorage.getItem(storageKey)) {
-            localStorage.removeItem(storageKey);
-        } else {
-            localStorage.setItem(storageKey, 'true');
-        }
-        updateHomeUI();
-    }
-
-    function switchTab(tab) {
-        document.getElementById('workout-screen').classList.remove('active');
-        document.getElementById('timer-screen').classList.remove('active');
-        clearInterval(timerInterval);
-
-        document.querySelectorAll('.main-tab').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-
-        if(tab === 'home') {
-            document.getElementById('home-screen').classList.add('active');
-            document.getElementById('nav-home').classList.add('active');
-            updateHomeUI();
-        } else if(tab === 'calendar') {
-            document.getElementById('calendar-screen').classList.add('active');
-            document.getElementById('nav-calendar').classList.add('active');
-            updateCalendarUI();
-        } else if(tab === 'dict') {
-            document.getElementById('dictionary-screen').classList.add('active');
-            document.getElementById('nav-dict').classList.add('active');
-        }
-        window.scrollTo(0, 0);
-    }
-
-    function openWorkout(dayKey) {
-        activeDayKey = dayKey;
-        document.querySelectorAll('.main-tab').forEach(el => el.classList.remove('active'));
-        document.getElementById('workout-screen').classList.add('active');
-        
-        const weekData = weeksData[currentWeek];
-        const dayData = weekData.days[dayKey];
-        
-        document.getElementById('workout-title').innerText = `🔥 ${currentWeek}. Hafta - ${dayData.title}`;
-        
-        const list = document.getElementById('exercise-list');
-        list.innerHTML = '';
-        
-        dayData.exercises.forEach(ex => {
-            let techHtml = ex.tech ? `<span class="tech-badge">${ex.tech}</span>` : '';
-            let ytQuery = encodeURIComponent(ex.name + " exercise form tutorial");
-            let videoLink = `https://www.youtube.com/results?search_query=${ytQuery}`;
-
-            // Set butonlarını oluştur
-            let setsHtml = '';
-            let allSetsCompleted = true;
-
-            for(let s = 1; s <= ex.sets; s++) {
-                let setKey = `creed_w${currentWeek}_${dayKey}_${ex.id}_set${s}`;
-                let isSetDone = localStorage.getItem(setKey);
-                if(!isSetDone) allSetsCompleted = false;
-
-                setsHtml += `
-                    <button class="set-btn ${isSetDone ? 'done' : ''}" id="btn-${ex.id}-set${s}" onclick="toggleSet('${ex.id}', ${s}, ${ex.sets})">
-                        Set ${s} ${isSetDone ? '✓' : ''}
-                    </button>
-                `;
-            }
-
-            let cardHtml = `
-                <div class="exercise-card ${allSetsCompleted ? 'all-sets-done' : ''}" id="card-${ex.id}">
-                    <div class="exercise-header">
-                        <div class="exercise-title">${ex.name}</div>
-                        <div class="exercise-badges">
-                            ${techHtml}
-                            <a href="${videoLink}" target="_blank" class="btn-video">🎥 İzle</a>
-                        </div>
-                    </div>
-                    <div class="exercise-stats">
-                        <div class="stat-item">
-                            <span class="stat-label">Toplam Set</span>
-                            <span class="stat-value">${ex.sets}</span>
-                        </div>
-                        <div class="stat-item" style="border-left: 1px solid #2A3441; padding-left: 15px;">
-                            <span class="stat-label">Tekrar</span>
-                            <span class="stat-value">${ex.reps}</span>
-                        </div>
-                        <div class="stat-item" style="border-left: 1px solid #2A3441; padding-left: 15px;">
-                            <span class="stat-label">RIR</span>
-                            <span class="stat-value">${ex.rir}</span>
-                        </div>
-                    </div>
-                    <div class="sets-container" id="sets-${ex.id}">
-                        ${setsHtml}
-                    </div>
-                    <div class="two-col">
-                        <button class="btn-action btn-rest" onclick="startTimer(60)">⏱ 1 Dk Dinlen</button>
-                        <button class="btn-action btn-rest" onclick="startTimer(120)">⏱ 2 Dk Dinlen</button>
-                    </div>
-                </div>
-            `;
-            list.innerHTML += cardHtml;
-        });
-        window.scrollTo(0, 0);
-    }
-
-    // Set durumunu değiştirme ve hafızaya kaydetme
-    function toggleSet(exId, setNum, totalSets) {
-        let setKey = `creed_w${currentWeek}_${activeDayKey}_${exId}_set${setNum}`;
-        let btn = document.getElementById(`btn-${exId}-set${setNum}`);
-        let card = document.getElementById(`card-${exId}`);
-
-        if(localStorage.getItem(setKey)) {
-            localStorage.removeItem(setKey);
-            btn.classList.remove('done');
-            btn.innerText = `Set ${setNum}`;
-        } else {
-            localStorage.setItem(setKey, 'true');
-            btn.classList.add('done');
-            btn.innerText = `Set ${setNum} ✓`;
-        }
-
-        // Tüm setler bitti mi kontrol et
-        let allDone = true;
-        for(let s = 1; s <= totalSets; s++) {
-            if(!localStorage.getItem(`creed_w${currentWeek}_${activeDayKey}_${exId}_set${s}`)) {
-                allDone = false;
-                break;
-            }
-        }
-
-        if(allDone) {
-            card.classList.add('all-sets-done');
-        } else {
-            card.classList.remove('all-sets-done');
-        }
-    }
-
-    function goHome() {
-        switchTab('home');
-    }
-
-    function startTimer(seconds) {
-        document.getElementById('workout-screen').classList.remove('active');
-        document.getElementById('timer-screen').classList.add('active');
-        
-        let timeLeft = seconds;
-        updateTimerDisplay(timeLeft);
-        
-        clearInterval(timerInterval);
-        timerInterval = setInterval(() => {
-            timeLeft--;
-            updateTimerDisplay(timeLeft);
-            if (timeLeft <= 0) {
-                clearInterval(timerInterval);
-                alert("🔔 Dinlenme süresi bitti! Antrenmana dön ve parçalamaya devam et.");
-                stopTimer();
-            }
-        }, 1000);
-    }
-
-    function stopTimer() {
-        clearInterval(timerInterval);
-        document.getElementById('timer-screen').classList.remove('active');
-        document.getElementById('workout-screen').classList.add('active');
-    }
-
-    function updateTimerDisplay(seconds) {
-        let m = Math.floor(seconds / 60).toString().padStart(2, '0');
-        let s = (seconds % 60).toString().padStart(2, '0');
-        document.getElementById('timer').innerText = `${m}:${s}`;
-    }
-
-    function finishWorkout() {
-        if(activeDayKey) {
-            localStorage.setItem(`creed_w${currentWeek}_${activeDayKey}`, 'true');
-        }
-
-        if(currentWeek == 12 && activeDayKey === 'cuma') {
-            alert("🏆 12 HAFTAYI BİTİRDİN!\n\nArtık bahanen kalmadı. İstersen buradan sonra yalnız devam et, istersen yeni bir serüvene başla!");
-        } else {
-            alert(`🏆 Tebrikler! ${currentWeek}. Hafta antrenmanı kaydedildi.\n\nŞimdi PDF kurallarına göre kardiyo zamanı:\n🏃‍♂️ 15 Dakika\n📈 10 Eğim\n⚡ 5 Hız`);
-        }
-        goHome();
-    }
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
 </script>
 
 </body>
